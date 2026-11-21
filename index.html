@@ -1,1105 +1,891 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>XTM MTK Tool [BETA] V1.0.0</title>
+  <title>XTM MTK Tool — Professional Android Flash & Repair Software</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
 
     :root {
-      --bg-dark: #0d0d0d;
-      --bg-panel: #111418;
-      --bg-card: #161b22;
-      --bg-btn: #1c2128;
-      --bg-btn-hover: #21262d;
-      --accent-blue: #1f6feb;
-      --accent-cyan: #39d353;
-      --accent-orange: #f78166;
-      --accent-yellow: #e3b341;
-      --accent-purple: #bc8cff;
-      --text-primary: #c9d1d9;
-      --text-secondary: #8b949e;
-      --border: #30363d;
-      --btn-active: #1f6feb;
+      --blue: #1f6feb;
+      --cyan: #00d4ff;
       --green: #39d353;
+      --orange: #f78166;
+      --purple: #bc8cff;
+      --yellow: #e3b341;
       --red: #f85149;
+      --bg: #060a10;
+      --bg2: #0d1117;
+      --bg3: #161b22;
+      --border: #21262d;
+      --text: #c9d1d9;
+      --text2: #8b949e;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg-dark);
-      color: var(--text-primary);
+      background: var(--bg);
+      color: var(--text);
       font-family: 'Rajdhani', sans-serif;
-      font-size: 14px;
-      min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* ===== TITLEBAR ===== */
-    .titlebar {
-      background: linear-gradient(90deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
-      border-bottom: 2px solid var(--accent-blue);
-      padding: 8px 16px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 20px rgba(31,111,235,0.3);
-    }
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
 
-    .logo-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-icon {
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(135deg, #f78166, #bc8cff, #1f6feb);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 900;
-      font-size: 14px;
-      color: white;
-      text-shadow: 0 0 10px rgba(255,255,255,0.5);
-      animation: logoPulse 3s ease-in-out infinite;
-    }
-
-    @keyframes logoPulse {
-      0%, 100% { box-shadow: 0 0 10px rgba(31,111,235,0.5); }
-      50% { box-shadow: 0 0 25px rgba(188,140,255,0.8), 0 0 50px rgba(31,111,235,0.3); }
-    }
-
-    .title-text {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--accent-blue);
-      text-shadow: 0 0 15px rgba(31,111,235,0.6);
-      letter-spacing: 2px;
-    }
-
-    .title-badge {
-      background: var(--accent-orange);
-      color: #000;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 4px;
-      letter-spacing: 1px;
-    }
-
-    .skin-selector {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-left: 10px;
-    }
-
-    .skin-selector label { color: var(--text-secondary); font-size: 13px; }
-    .skin-selector select {
-      background: var(--bg-btn);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 4px 10px;
-      border-radius: 5px;
-      font-family: 'Rajdhani', sans-serif;
-      cursor: pointer;
-    }
-
-    /* Brand Tabs */
-    .brand-tabs {
-      display: flex;
-      gap: 4px;
-      margin-left: auto;
-      flex-wrap: wrap;
-    }
-
-    .brand-tab {
-      padding: 6px 16px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--bg-btn);
-      color: var(--text-secondary);
-      cursor: pointer;
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 600;
-      font-size: 13px;
-      transition: all 0.2s;
-      letter-spacing: 0.5px;
-    }
-
-    .brand-tab:hover {
-      background: var(--bg-btn-hover);
-      color: var(--text-primary);
-      border-color: var(--accent-blue);
-    }
-
-    .brand-tab.active {
-      background: var(--accent-blue);
-      color: white;
-      border-color: var(--accent-blue);
-      box-shadow: 0 0 12px rgba(31,111,235,0.5);
-    }
-
-    .title-actions {
-      display: flex;
-      gap: 8px;
-      margin-left: 10px;
-    }
-
-    .btn-stop {
-      padding: 6px 18px;
-      background: var(--red);
-      border: none;
-      border-radius: 6px;
-      color: white;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Rajdhani', sans-serif;
-      transition: all 0.2s;
-      letter-spacing: 1px;
-    }
-
-    .btn-stop:hover { background: #ff6b6b; box-shadow: 0 0 12px rgba(248,81,73,0.5); }
-
-    .btn-maxlog {
-      padding: 6px 18px;
-      background: var(--bg-btn);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--text-primary);
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Rajdhani', sans-serif;
-      transition: all 0.2s;
-      letter-spacing: 1px;
-    }
-
-    .btn-maxlog:hover { background: var(--bg-btn-hover); border-color: var(--accent-blue); }
-
-    /* ===== MAIN LAYOUT ===== */
-    .main-layout {
-      display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 0;
-      height: calc(100vh - 70px);
-    }
-
-    /* ===== LEFT PANEL ===== */
-    .left-panel {
-      border-right: 2px solid var(--border);
-      overflow-y: auto;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    /* Inner Tabs */
-    .inner-tabs {
-      display: flex;
-      border-bottom: 2px solid var(--border);
-      gap: 0;
-    }
-
-    .inner-tab {
-      padding: 8px 24px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 1px;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -2px;
-      color: var(--text-secondary);
-      transition: all 0.2s;
-      text-transform: uppercase;
-    }
-
-    .inner-tab.active {
-      color: var(--accent-blue);
-      border-bottom-color: var(--accent-blue);
-      text-shadow: 0 0 10px rgba(31,111,235,0.5);
-    }
-
-    .inner-tab:hover { color: var(--text-primary); }
-
-    /* Config Section */
-    .config-section {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .config-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .config-field {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .config-label {
-      color: var(--text-secondary);
-      font-size: 12px;
-      white-space: nowrap;
-      min-width: 55px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .config-select, .config-input {
-      flex: 1;
-      background: var(--bg-btn);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 13px;
-      transition: border-color 0.2s;
-    }
-
-    .config-select:focus, .config-input:focus {
-      outline: none;
-      border-color: var(--accent-blue);
-    }
-
-    /* DA Source */
-    .da-source {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .da-source label {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-      color: var(--text-secondary);
-      font-size: 13px;
-    }
-
-    .da-source input[type="radio"] { accent-color: var(--accent-blue); }
-
-    /* Checkboxes */
-    .checkbox-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-    }
-
-    .checkbox-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 12px;
-      color: var(--text-secondary);
-      cursor: pointer;
-    }
-
-    .checkbox-item input[type="checkbox"] { accent-color: var(--accent-blue); }
-
-    /* ===== OPERATIONS TABS ===== */
-    .ops-tabs {
-      display: flex;
-      gap: 4px;
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top:0; width:100%; z-index:999;
+      background: rgba(6,10,16,0.95);
       border-bottom: 1px solid var(--border);
-      padding-bottom: 8px;
+      backdrop-filter: blur(10px);
+      padding: 12px 40px;
+      display: flex; align-items:center; gap:20px;
+    }
+    .nav-logo {
+      display:flex; align-items:center; gap:10px;
+      font-family:'Orbitron',sans-serif; font-weight:900;
+      font-size:18px; color:var(--blue);
+      text-shadow: 0 0 20px rgba(31,111,235,0.6);
+      text-decoration:none;
+    }
+    .nav-logo-icon {
+      width:38px; height:38px; border-radius:8px;
+      background: linear-gradient(135deg,#f78166,#bc8cff,#1f6feb);
+      display:flex; align-items:center; justify-content:center;
+      font-size:12px; font-weight:900; color:#fff;
+      box-shadow: 0 0 15px rgba(31,111,235,0.4);
+    }
+    .nav-badge {
+      background:var(--orange); color:#000;
+      font-size:9px; font-weight:700; padding:2px 6px;
+      border-radius:4px; letter-spacing:1px; margin-left:4px;
+    }
+    .nav-links { display:flex; gap:28px; margin-left:auto; }
+    .nav-links a {
+      color:var(--text2); text-decoration:none;
+      font-weight:600; font-size:14px; letter-spacing:0.5px;
+      transition:color 0.2s;
+    }
+    .nav-links a:hover { color:var(--cyan); }
+    .nav-btn {
+      padding:8px 22px; background:var(--blue); color:#fff;
+      border:none; border-radius:8px; font-family:'Rajdhani',sans-serif;
+      font-weight:700; font-size:14px; cursor:pointer; letter-spacing:1px;
+      transition:all 0.2s; text-decoration:none;
+      box-shadow:0 0 15px rgba(31,111,235,0.4);
+    }
+    .nav-btn:hover { background:#388bfd; box-shadow:0 0 25px rgba(31,111,235,0.7); transform:translateY(-1px); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding: 100px 40px 60px;
+      position:relative; overflow:hidden; text-align:center;
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(31,111,235,0.12) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 40% at 80% 80%, rgba(188,140,255,0.08) 0%, transparent 60%);
+    }
+    .grid-bg {
+      position:absolute; inset:0;
+      background-image:
+        linear-gradient(rgba(31,111,235,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31,111,235,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .hero-content { position:relative; z-index:2; max-width:900px; }
+    .hero-eyebrow {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(31,111,235,0.1); border:1px solid rgba(31,111,235,0.3);
+      border-radius:30px; padding:6px 18px; margin-bottom:24px;
+      font-family:'Share Tech Mono',monospace; font-size:12px; color:var(--cyan);
+      letter-spacing:2px; animation: fadeDown 0.6s ease-out;
+    }
+    .hero-eyebrow .dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:blink 1s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    h1 {
+      font-family:'Orbitron',sans-serif; font-weight:900;
+      font-size: clamp(32px, 5vw, 62px);
+      line-height:1.1; margin-bottom:20px;
+      animation: fadeDown 0.7s ease-out;
+    }
+    h1 .hl { color:var(--blue); text-shadow:0 0 30px rgba(31,111,235,0.5); }
+    h1 .hl2 { color:var(--cyan); }
+
+    .hero-sub {
+      font-size:clamp(16px,2vw,20px); color:var(--text2); line-height:1.6;
+      max-width:650px; margin:0 auto 36px;
+      animation: fadeDown 0.8s ease-out;
     }
 
-    .ops-tab {
-      padding: 5px 18px;
-      border-radius: 6px 6px 0 0;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 13px;
-      border: 1px solid var(--border);
-      border-bottom: none;
-      background: var(--bg-btn);
-      color: var(--text-secondary);
-      transition: all 0.2s;
-      letter-spacing: 0.5px;
+    .hero-btns {
+      display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+      margin-bottom:50px; animation: fadeDown 0.9s ease-out;
+    }
+    .btn-primary {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:14px 32px; background:var(--blue); color:#fff;
+      border-radius:10px; font-weight:700; font-size:16px;
+      text-decoration:none; letter-spacing:1px;
+      box-shadow:0 0 25px rgba(31,111,235,0.5);
+      transition:all 0.25s;
+    }
+    .btn-primary:hover { background:#388bfd; transform:translateY(-2px); box-shadow:0 8px 30px rgba(31,111,235,0.6); }
+    .btn-outline {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:14px 32px; border:2px solid var(--border); color:var(--text);
+      border-radius:10px; font-weight:700; font-size:16px;
+      text-decoration:none; letter-spacing:1px; transition:all 0.25s;
+    }
+    .btn-outline:hover { border-color:var(--cyan); color:var(--cyan); transform:translateY(-2px); }
+
+    /* ─── TOOL MINI IMAGE (CSS Art) ─── */
+    .tool-preview {
+      position:relative; max-width:800px; margin:0 auto;
+      animation: floatUp 3s ease-in-out infinite;
+    }
+    @keyframes floatUp {
+      0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}
+    }
+    .tool-window {
+      background:#0d1117; border:2px solid #21262d; border-radius:12px;
+      overflow:hidden;
+      box-shadow:
+        0 0 0 1px rgba(31,111,235,0.2),
+        0 20px 60px rgba(0,0,0,0.8),
+        0 0 80px rgba(31,111,235,0.15);
+    }
+    .tool-titlebar {
+      background: linear-gradient(90deg,#0d1117,#161b22);
+      border-bottom:1px solid #21262d;
+      padding:8px 14px; display:flex; align-items:center; gap:10px;
+    }
+    .tbar-dots { display:flex; gap:5px; }
+    .tbar-dot { width:11px; height:11px; border-radius:50%; }
+    .dot-r{background:#f85149;} .dot-y{background:#e3b341;} .dot-g{background:#39d353;}
+    .tbar-title {
+      font-family:'Orbitron',sans-serif; font-size:11px; color:var(--blue);
+      letter-spacing:2px; margin-left:4px;
+    }
+    .tbar-tabs {
+      display:flex; gap:4px; margin-left:auto;
+    }
+    .tbar-tab {
+      padding:3px 12px; border-radius:4px; font-size:11px;
+      font-family:'Rajdhani',sans-serif; font-weight:600; letter-spacing:0.5px;
+    }
+    .tbar-tab.at { background:var(--blue); color:#fff; }
+    .tbar-tab.in { background:#161b22; color:#8b949e; border:1px solid #21262d; }
+
+    .tool-body { display:grid; grid-template-columns:1fr 220px; }
+
+    /* Left mini panel */
+    .tool-left { padding:10px; border-right:1px solid #21262d; }
+    .mini-row {
+      display:flex; gap:6px; margin-bottom:6px; align-items:center;
+    }
+    .mini-label { font-size:10px; color:#8b949e; font-family:'Share Tech Mono',monospace; min-width:38px; }
+    .mini-select {
+      flex:1; background:#161b22; border:1px solid #21262d; border-radius:4px;
+      color:#c9d1d9; padding:3px 6px; font-size:10px; font-family:'Share Tech Mono',monospace;
+    }
+    .mini-btns { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-top:8px; }
+    .mini-btn {
+      padding:5px 4px; background:#161b22; border:1px solid #21262d;
+      border-radius:4px; color:#8b949e; font-size:9px;
+      font-family:'Rajdhani',sans-serif; text-align:center; font-weight:600;
+    }
+    .mini-btn.hl { background:var(--blue); border-color:var(--blue); color:#fff; }
+    .mini-btn.gr { border-color:#39d35344; color:#39d353; }
+    .mini-btn.re { border-color:#f8514944; color:#f85149; }
+
+    /* Right log mini */
+    .tool-right { background:#070b10; padding:10px; }
+    .mini-log-title { font-size:10px; color:var(--yellow); font-family:'Share Tech Mono',monospace; margin-bottom:6px; }
+    .mini-log-line { font-family:'Share Tech Mono',monospace; font-size:9px; line-height:1.9; display:block; }
+    .ml-g{color:#39d353;} .ml-y{color:#e3b341;} .ml-c{color:#58a6ff;} .ml-w{color:#c9d1d9;} .ml-r{color:#f85149;}
+
+    .tool-statusbar {
+      background:#070b10; border-top:1px solid #21262d;
+      padding:5px 12px; display:flex; justify-content:space-between;
+      font-family:'Share Tech Mono',monospace; font-size:9px; color:#6e7681;
+    }
+    .tool-statusbar .sg { color:var(--green); }
+
+    /* Glow lines */
+    .glow-line {
+      position:absolute; height:1px; left:0; right:0;
+      background:linear-gradient(90deg,transparent,var(--blue),transparent);
+      opacity:0.4;
     }
 
-    .ops-tab.active {
-      background: var(--accent-blue);
-      color: white;
-      border-color: var(--accent-blue);
+    /* ─── STATS ─── */
+    .stats {
+      display:flex; justify-content:center; gap:60px; flex-wrap:wrap;
+      padding:50px 40px; border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      background:var(--bg2);
+    }
+    .stat-item { text-align:center; }
+    .stat-num {
+      font-family:'Orbitron',sans-serif; font-size:38px; font-weight:900;
+      color:var(--blue); text-shadow:0 0 20px rgba(31,111,235,0.4);
+    }
+    .stat-label { color:var(--text2); font-size:14px; letter-spacing:1px; margin-top:4px; }
+
+    /* ─── FEATURES ─── */
+    .section { padding:80px 40px; max-width:1200px; margin:0 auto; }
+    .section-title {
+      text-align:center; font-family:'Orbitron',sans-serif;
+      font-size:clamp(22px,3vw,36px); font-weight:700; margin-bottom:12px;
+    }
+    .section-sub { text-align:center; color:var(--text2); font-size:16px; margin-bottom:50px; }
+    .accent { color:var(--cyan); }
+
+    .features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+    .feature-card {
+      background:var(--bg2); border:1px solid var(--border); border-radius:14px;
+      padding:28px; transition:all 0.3s; cursor:default; position:relative; overflow:hidden;
+    }
+    .feature-card::before {
+      content:''; position:absolute; inset:0; border-radius:14px;
+      background:linear-gradient(135deg,rgba(31,111,235,0.08),transparent);
+      opacity:0; transition:opacity 0.3s;
+    }
+    .feature-card:hover { border-color:rgba(31,111,235,0.5); transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,0,0,0.4); }
+    .feature-card:hover::before { opacity:1; }
+    .feat-icon { font-size:34px; margin-bottom:14px; display:block; }
+    .feat-title { font-size:18px; font-weight:700; margin-bottom:8px; color:#e6edf3; }
+    .feat-desc { color:var(--text2); font-size:14px; line-height:1.6; }
+    .feat-tag {
+      display:inline-block; margin-top:12px; padding:3px 10px;
+      border-radius:20px; font-size:11px; font-weight:700; letter-spacing:1px;
+    }
+    .tag-blue { background:rgba(31,111,235,0.15); color:var(--blue); border:1px solid rgba(31,111,235,0.3); }
+    .tag-green { background:rgba(57,211,83,0.1); color:var(--green); border:1px solid rgba(57,211,83,0.3); }
+    .tag-purple { background:rgba(188,140,255,0.1); color:var(--purple); border:1px solid rgba(188,140,255,0.3); }
+    .tag-orange { background:rgba(247,129,102,0.1); color:var(--orange); border:1px solid rgba(247,129,102,0.3); }
+
+    /* ─── BRANDS SUPPORT ─── */
+    .brands-section {
+      background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+      padding:60px 40px; text-align:center;
+    }
+    .brands-row {
+      display:flex; justify-content:center; flex-wrap:wrap; gap:16px; margin-top:36px;
+    }
+    .brand-chip {
+      padding:12px 28px; background:var(--bg3); border:1px solid var(--border);
+      border-radius:10px; font-weight:700; font-size:14px; letter-spacing:1px;
+      color:var(--text2); transition:all 0.25s; cursor:default;
+    }
+    .brand-chip:hover { border-color:var(--blue); color:var(--blue); box-shadow:0 0 15px rgba(31,111,235,0.2); }
+    .brand-chip.active-chip { border-color:var(--blue); color:var(--blue); background:rgba(31,111,235,0.08); }
+
+    /* ─── PRICING ─── */
+    .pricing-section { padding:80px 40px; }
+    .pricing-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:24px; max-width:1000px; margin:0 auto;
+    }
+    .price-card {
+      background:var(--bg2); border:1px solid var(--border); border-radius:16px;
+      padding:36px 30px; text-align:center; position:relative; overflow:hidden;
+      transition:all 0.3s;
+    }
+    .price-card:hover { transform:translateY(-6px); box-shadow:0 20px 50px rgba(0,0,0,0.5); }
+    .price-card.popular {
+      border-color:var(--blue);
+      background:linear-gradient(135deg,rgba(31,111,235,0.08),var(--bg2));
+      box-shadow:0 0 30px rgba(31,111,235,0.2);
+    }
+    .popular-badge {
+      position:absolute; top:16px; right:16px;
+      background:var(--blue); color:#fff; font-size:11px; font-weight:700;
+      padding:4px 12px; border-radius:20px; letter-spacing:1px;
+    }
+    .price-plan {
+      font-family:'Orbitron',sans-serif; font-size:14px; font-weight:700;
+      color:var(--text2); letter-spacing:2px; text-transform:uppercase; margin-bottom:16px;
+    }
+    .price-amount {
+      font-family:'Orbitron',sans-serif; font-size:52px; font-weight:900;
+      color:#e6edf3; line-height:1; margin-bottom:4px;
+    }
+    .price-amount span { font-size:22px; color:var(--text2); }
+    .price-period { color:var(--text2); font-size:13px; margin-bottom:28px; }
+    .price-features { list-style:none; margin-bottom:30px; }
+    .price-features li {
+      padding:9px 0; border-bottom:1px solid var(--border);
+      font-size:14px; color:var(--text2); display:flex; align-items:center; gap:8px; justify-content:center;
+    }
+    .price-features li:last-child { border-bottom:none; }
+    .pf-yes { color:var(--green); }
+    .pf-no  { color:#3d444d; }
+    .btn-price {
+      width:100%; padding:13px; border-radius:10px; font-weight:700; font-size:15px;
+      cursor:pointer; font-family:'Rajdhani',sans-serif; letter-spacing:1px; transition:all 0.25s; border:none;
+    }
+    .btn-price-primary { background:var(--blue); color:#fff; box-shadow:0 0 20px rgba(31,111,235,0.4); }
+    .btn-price-primary:hover { background:#388bfd; box-shadow:0 0 30px rgba(31,111,235,0.7); transform:translateY(-1px); }
+    .btn-price-outline { background:transparent; border:2px solid var(--border); color:var(--text); }
+    .btn-price-outline:hover { border-color:var(--blue); color:var(--blue); }
+
+    /* ─── DOWNLOAD ─── */
+    .download-section {
+      background:var(--bg2); border-top:1px solid var(--border);
+      padding:80px 40px; text-align:center;
+    }
+    .download-cards {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:16px; max-width:900px; margin:40px auto;
+    }
+    .dl-card {
+      background:var(--bg3); border:1px solid var(--border); border-radius:14px;
+      padding:28px 20px; text-align:center; transition:all 0.3s; cursor:pointer;
+    }
+    .dl-card:hover { border-color:var(--blue); transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,0,0,0.4); }
+    .dl-icon { font-size:40px; margin-bottom:12px; display:block; }
+    .dl-name { font-family:'Orbitron',sans-serif; font-size:14px; font-weight:700; margin-bottom:6px; }
+    .dl-ver { color:var(--text2); font-size:12px; margin-bottom:4px; font-family:'Share Tech Mono',monospace; }
+    .dl-size { color:var(--blue); font-size:12px; font-family:'Share Tech Mono',monospace; margin-bottom:16px; }
+    .btn-download {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:10px 24px; background:var(--blue); color:#fff;
+      border-radius:8px; font-weight:700; font-size:13px; cursor:pointer;
+      border:none; font-family:'Rajdhani',sans-serif; letter-spacing:1px;
+      box-shadow:0 0 15px rgba(31,111,235,0.4); transition:all 0.2s;
+    }
+    .btn-download:hover { background:#388bfd; box-shadow:0 0 25px rgba(31,111,235,0.7); transform:translateY(-2px); }
+    .dl-requirements {
+      max-width:600px; margin:0 auto; background:rgba(31,111,235,0.06);
+      border:1px solid rgba(31,111,235,0.2); border-radius:12px; padding:20px 28px;
+    }
+    .dl-req-title { color:var(--cyan); font-weight:700; margin-bottom:12px; font-size:15px; }
+    .dl-req-list { list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+    .dl-req-list li { color:var(--text2); font-size:13px; display:flex; align-items:center; gap:6px; }
+
+    /* ─── CHANGELOG ─── */
+    .changelog-section { padding:80px 40px; max-width:800px; margin:0 auto; }
+    .changelog-item {
+      border-left:2px solid var(--border); padding-left:20px; margin-bottom:28px;
+      position:relative;
+    }
+    .changelog-item::before {
+      content:''; position:absolute; left:-5px; top:4px;
+      width:8px; height:8px; border-radius:50%; background:var(--blue);
+    }
+    .changelog-ver {
+      font-family:'Orbitron',sans-serif; font-size:14px; color:var(--blue);
+      font-weight:700; margin-bottom:4px;
+    }
+    .changelog-date { color:var(--text2); font-size:12px; font-family:'Share Tech Mono',monospace; margin-bottom:10px; }
+    .changelog-list { list-style:none; }
+    .changelog-list li { color:var(--text2); font-size:14px; padding:3px 0; display:flex; align-items:flex-start; gap:8px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background:var(--bg); border-top:1px solid var(--border);
+      padding:40px; text-align:center;
+    }
+    .footer-logo {
+      font-family:'Orbitron',sans-serif; font-size:20px; font-weight:900;
+      color:var(--blue); margin-bottom:12px;
+    }
+    .footer-sub { color:var(--text2); font-size:13px; margin-bottom:20px; }
+    .footer-links { display:flex; justify-content:center; gap:28px; flex-wrap:wrap; margin-bottom:20px; }
+    .footer-links a { color:var(--text2); text-decoration:none; font-size:13px; transition:color 0.2s; }
+    .footer-links a:hover { color:var(--cyan); }
+    .footer-copy { color:#3d444d; font-size:12px; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeDown {
+      from { opacity:0; transform:translateY(-20px); }
+      to   { opacity:1; transform:translateY(0); }
     }
 
-    .ops-tab:hover:not(.active) { background: var(--bg-btn-hover); color: var(--text-primary); }
-
-    /* ===== BUTTONS GRID ===== */
-    .buttons-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
+    .reveal {
+      opacity:0; transform:translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
+    .reveal.visible { opacity:1; transform:translateY(0); }
 
-    .tool-btn {
-      padding: 9px 8px;
-      background: var(--bg-btn);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--text-primary);
-      cursor: pointer;
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 600;
-      font-size: 13px;
-      text-align: center;
-      transition: all 0.2s;
-      letter-spacing: 0.3px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .tool-btn::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-      transition: left 0.4s;
-    }
-
-    .tool-btn:hover::before { left: 100%; }
-
-    .tool-btn:hover {
-      background: var(--bg-btn-hover);
-      border-color: var(--accent-blue);
-      color: white;
-      box-shadow: 0 0 10px rgba(31,111,235,0.2);
-      transform: translateY(-1px);
-    }
-
-    .tool-btn.active-btn {
-      background: var(--accent-blue);
-      border-color: var(--accent-blue);
-      color: white;
-      box-shadow: 0 0 15px rgba(31,111,235,0.5);
-      animation: btnPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes btnPulse {
-      0%, 100% { box-shadow: 0 0 10px rgba(31,111,235,0.4); }
-      50% { box-shadow: 0 0 20px rgba(31,111,235,0.8); }
-    }
-
-    .tool-btn.danger-btn:hover {
-      border-color: var(--red);
-      box-shadow: 0 0 10px rgba(248,81,73,0.3);
-    }
-
-    .tool-btn.success-btn:hover {
-      border-color: var(--green);
-      box-shadow: 0 0 10px rgba(57,211,83,0.3);
-    }
-
-    /* ===== RIGHT PANEL (LOG) ===== */
-    .right-panel {
-      display: flex;
-      flex-direction: column;
-      background: #0a0e14;
-      border-left: 2px solid var(--border);
-    }
-
-    .log-header {
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border);
-      padding: 8px 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 11px;
-      color: var(--accent-blue);
-      letter-spacing: 2px;
-    }
-
-    .log-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--green);
-      animation: blink 1s ease-in-out infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    .log-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px 14px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 12px;
-      line-height: 1.8;
-    }
-
-    .log-body::-webkit-scrollbar { width: 6px; }
-    .log-body::-webkit-scrollbar-track { background: #0a0e14; }
-    .log-body::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
-
-    .log-line { display: block; }
-    .log-line.green { color: #39d353; }
-    .log-line.yellow { color: #e3b341; }
-    .log-line.red { color: #f85149; }
-    .log-line.cyan { color: #58a6ff; }
-    .log-line.white { color: #c9d1d9; }
-    .log-line.purple { color: #bc8cff; }
-    .log-line.orange { color: #f78166; }
-    .log-line.dimmed { color: #6e7681; }
-
-    .log-section-title {
-      color: #e3b341;
-      font-weight: bold;
-      margin-top: 4px;
-    }
-
-    /* Progress Bar */
-    .progress-bar-container {
-      border-top: 2px solid var(--border);
-      padding: 10px 14px;
-      background: var(--bg-card);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .pc-label {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 10px;
-      color: var(--text-secondary);
-      letter-spacing: 1px;
-    }
-
-    .progress-track {
-      flex: 1;
-      height: 20px;
-      background: #0d1117;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #1f6feb, #39d353);
-      border-radius: 10px;
-      width: 0%;
-      transition: width 0.3s;
-      position: relative;
-    }
-
-    .progress-fill::after {
-      content: '';
-      position: absolute;
-      top: 0; right: 0;
-      width: 20px; height: 100%;
-      background: rgba(255,255,255,0.3);
-      border-radius: 0 10px 10px 0;
-    }
-
-    .progress-text {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: white;
-      white-space: nowrap;
-      text-shadow: 0 0 5px rgba(0,0,0,0.8);
-    }
-
-    .ok-badge {
-      background: var(--green);
-      color: #000;
-      font-weight: 700;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      letter-spacing: 1px;
-      white-space: nowrap;
-    }
-
-    /* Status Bar */
-    .statusbar {
-      background: #0a0e14;
-      border-top: 1px solid var(--border);
-      padding: 5px 14px;
-      display: flex;
-      justify-content: space-between;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: var(--text-secondary);
-      grid-column: 1 / -1;
-    }
-
-    .status-green { color: var(--green); }
-
-    /* Scrollbar */
-    .left-panel::-webkit-scrollbar { width: 6px; }
-    .left-panel::-webkit-scrollbar-track { background: var(--bg-dark); }
-    .left-panel::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
-
-    /* Section Divider */
-    .section-label {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 10px;
-      color: var(--accent-blue);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 5px;
-      margin-bottom: 5px;
-    }
-
-    /* Tooltip */
-    .tool-btn[title]:hover::after {
-      content: attr(title);
-      position: absolute;
-      bottom: calc(100% + 5px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: #000;
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      white-space: nowrap;
-      z-index: 999;
-      pointer-events: none;
-    }
-
-    /* Responsive */
-    @media (max-width: 900px) {
-      .main-layout { grid-template-columns: 1fr; }
-      .right-panel { display: none; }
-      .brand-tabs { display: none; }
-      .checkbox-row { grid-template-columns: repeat(2, 1fr); }
-      .buttons-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    /* Notification Toast */
-    .toast {
-      position: fixed;
-      bottom: 40px;
-      right: 20px;
-      background: var(--bg-card);
-      border: 1px solid var(--accent-blue);
-      color: var(--green);
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 13px;
-      box-shadow: 0 0 20px rgba(31,111,235,0.3);
-      transform: translateX(200%);
-      transition: transform 0.4s;
-      z-index: 999;
-    }
-
-    .toast.show { transform: translateX(0); }
-
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .config-section, .buttons-grid, .ops-tabs {
-      animation: fadeIn 0.3s ease-out;
+    /* ─── MOBILE ─── */
+    @media(max-width:768px) {
+      nav { padding:12px 20px; }
+      .nav-links { display:none; }
+      .hero { padding:80px 20px 40px; }
+      .stats { gap:30px; padding:40px 20px; }
+      .section { padding:60px 20px; }
+      .pricing-section, .download-section, .brands-section { padding:60px 20px; }
     }
   </style>
 </head>
 <body>
 
-<!-- TITLEBAR -->
-<div class="titlebar">
-  <div class="logo-box">
-    <div class="logo-icon">XTM</div>
-    <div>
-      <div class="title-text">XTM MTK <span class="title-badge">BETA</span> V1.0.0</div>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">XTM</div>
+    XTM MTK <span class="nav-badge">BETA</span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#brands">Supported</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#download">Download</a>
+    <a href="#changelog">Changelog</a>
+  </div>
+  <a class="nav-btn" href="#download">⬇ Download Free</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      V1.0.0 BETA — NOW AVAILABLE
     </div>
-  </div>
+    <h1>
+      The Most Powerful<br/>
+      <span class="hl">Android Flash</span> &amp;<br/>
+      <span class="hl2">Repair Tool</span>
+    </h1>
+    <p class="hero-sub">
+      Professional-grade mobile repair software supporting MediaTek, Samsung, Qualcomm &amp; Unisoc chipsets.
+      Flash, unbrick, remove FRP, write IMEI — all in one powerful tool.
+    </p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="#download">⬇ Download Free &nbsp;—&nbsp; V1.0.0</a>
+      <a class="btn-outline" href="#pricing">💎 View Plans</a>
+    </div>
 
-  <div class="skin-selector">
-    <label>Skin:</label>
-    <select onchange="changeSkin(this.value)">
-      <option>Glossy</option>
-      <option>Dark Pro</option>
-      <option>Neon Blue</option>
-      <option>Matrix</option>
-    </select>
-  </div>
+    <!-- TOOL MINI IMAGE -->
+    <div class="tool-preview">
+      <div class="tool-window">
+        <!-- Titlebar -->
+        <div class="tool-titlebar">
+          <div class="tbar-dots">
+            <div class="tbar-dot dot-r"></div>
+            <div class="tbar-dot dot-y"></div>
+            <div class="tbar-dot dot-g"></div>
+          </div>
+          <span class="tbar-title">XTM MTK [BETA] V1.0.0</span>
+          <div class="tbar-tabs">
+            <span class="tbar-tab in">Samsung</span>
+            <span class="tbar-tab at">Mediatek</span>
+            <span class="tbar-tab in">Qualcomm</span>
+            <span class="tbar-tab in">Unisoc</span>
+            <span class="tbar-tab in">HiSilicon</span>
+            <span class="tbar-tab in">Android</span>
+          </div>
+        </div>
 
-  <div class="brand-tabs">
-    <div class="brand-tab" onclick="switchBrand(this,'Samsung')">Samsung</div>
-    <div class="brand-tab active" onclick="switchBrand(this,'Mediatek')">Mediatek</div>
-    <div class="brand-tab" onclick="switchBrand(this,'Qualcomm')">Qualcomm</div>
-    <div class="brand-tab" onclick="switchBrand(this,'Unisoc')">Unisoc</div>
-    <div class="brand-tab" onclick="switchBrand(this,'HiSilicon')">HiSilicon</div>
-    <div class="brand-tab" onclick="switchBrand(this,'Android')">Android</div>
-  </div>
+        <!-- Tool Body -->
+        <div class="tool-body">
+          <!-- Left -->
+          <div class="tool-left">
+            <div class="mini-row">
+              <span class="mini-label">Brand:</span>
+              <select class="mini-select"><option>MEDIATEK</option></select>
+            </div>
+            <div class="mini-row">
+              <span class="mini-label">Model:</span>
+              <select class="mini-select"><option>Universal Mediatek V5</option></select>
+            </div>
+            <div class="mini-row">
+              <span class="mini-label">DA:</span>
+              <select class="mini-select"><option>MTK_AllInOne_DA</option></select>
+            </div>
+            <div class="mini-btns">
+              <div class="mini-btn">Read Info</div>
+              <div class="mini-btn re">Fix DL Err</div>
+              <div class="mini-btn">RPMB Key</div>
+              <div class="mini-btn hl">Format Data</div>
+              <div class="mini-btn">Flash Eng</div>
+              <div class="mini-btn">Write RPMB</div>
+              <div class="mini-btn gr">Safe Format</div>
+              <div class="mini-btn">Remove FRP</div>
+              <div class="mini-btn">Fix State</div>
+              <div class="mini-btn re">Reset FRP</div>
+              <div class="mini-btn">Unlock BL</div>
+              <div class="mini-btn">Write IMEI</div>
+              <div class="mini-btn">Micloud RST</div>
+              <div class="mini-btn re">Format FRP</div>
+              <div class="mini-btn">Backup EFS</div>
+            </div>
+          </div>
 
-  <div class="title-actions">
-    <button class="btn-stop" onclick="stopOperation()">■ Stop</button>
-    <button class="btn-maxlog" onclick="toggleMaxLog()">Max Log</button>
+          <!-- Right Log -->
+          <div class="tool-right">
+            <div class="mini-log-title">▶ SYSTEM LOG</div>
+            <span class="mini-log-line ml-y">EMMC Health Status:</span>
+            <span class="mini-log-line ml-g">Pre-EOL Status : Normal ✓</span>
+            <span class="mini-log-line ml-g">Switch High Speed...OK</span>
+            <span class="mini-log-line ml-g">Device Partition...[43] OK</span>
+            <span class="mini-log-line ml-y">ANDROID SYSTEM INFO</span>
+            <span class="mini-log-line ml-c">• Brand : TECNO</span>
+            <span class="mini-log-line ml-c">• Model : TECNO-KE5k</span>
+            <span class="mini-log-line ml-c">• Platform : mt6765</span>
+            <span class="mini-log-line ml-c">• Android : 10</span>
+            <span class="mini-log-line ml-c">• CPU ABI : arm64-v8a</span>
+            <span class="mini-log-line ml-g">Formatting Userdata...OK</span>
+            <span class="mini-log-line ml-g">Formatting FRP...OK</span>
+            <span class="mini-log-line ml-g">Rebooting device...OK</span>
+            <span class="mini-log-line" style="color:#39d353;font-weight:bold">✅ ALL DONE — 27 Seconds</span>
+          </div>
+        </div>
+
+        <!-- Statusbar -->
+        <div class="tool-statusbar">
+          <span>XTM TOOL V1.0.0 | <span class="sg">● CONNECTED</span></span>
+          <span style="color:#1f6feb">████████████ 100% OK ✓</span>
+          <span>Speed: 1,842 KB/s</span>
+        </div>
+      </div>
+    </div>
+    <!-- /tool preview -->
+
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item reveal">
+    <div class="stat-num">50K+</div>
+    <div class="stat-label">Active Users</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">120+</div>
+    <div class="stat-label">Device Models</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">6</div>
+    <div class="stat-label">Chipset Brands</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">99.8%</div>
+    <div class="stat-label">Success Rate</div>
   </div>
 </div>
 
-<!-- MAIN LAYOUT -->
-<div style="display:grid; grid-template-columns:1fr 420px; grid-template-rows:1fr auto; height:calc(100vh - 70px);">
-
-  <!-- LEFT PANEL -->
-  <div class="left-panel">
-
-    <!-- Inner Tabs -->
-    <div class="inner-tabs">
-      <div class="inner-tab active" onclick="switchInnerTab(this,'preloader')">PRELOADER / BROM</div>
-      <div class="inner-tab" onclick="switchInnerTab(this,'meta')">META</div>
+<!-- FEATURES -->
+<section class="section" id="features">
+  <h2 class="section-title reveal">Why Choose <span class="accent">XTM MTK Tool?</span></h2>
+  <p class="section-sub reveal">Everything a professional mobile repairer needs — in one single window.</p>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <span class="feat-icon">⚡</span>
+      <div class="feat-title">Lightning Fast Flash</div>
+      <div class="feat-desc">Flash firmware at blazing speeds up to 10 MB/s. Full ROM, recovery, boot, and system partition flashing with auto-verification.</div>
+      <span class="feat-tag tag-blue">FLASH ENGINE v5</span>
     </div>
-
-    <!-- Config Section -->
-    <div class="config-section">
-      <div class="config-row">
-        <div class="config-field">
-          <span class="config-label">Brand :</span>
-          <select class="config-select" id="brandSelect" onchange="updateModels()">
-            <option>MEDIATEK</option>
-            <option>SAMSUNG</option>
-            <option>QUALCOMM</option>
-            <option>UNISOC</option>
-          </select>
-        </div>
-        <div class="config-field">
-          <span class="config-label">Model :</span>
-          <select class="config-select" id="modelSelect">
-            <option>Universal Mediatek V5 - Mediatek</option>
-            <option>MTK Universal DA V6</option>
-            <option>Helio G85 - MT6769</option>
-            <option>Helio G95 - MT6785</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- DA Connections -->
-      <div>
-        <div class="section-label">DA Connections</div>
-        <div class="config-row">
-          <div class="config-field">
-            <span class="config-label" style="min-width:30px">DA :</span>
-            <select class="config-select">
-              <option>MTK_AllInOne_DA</option>
-              <option>MTK_DA_v5.2</option>
-              <option>MTK_DA_v6</option>
-            </select>
-          </div>
-          <div class="da-source">
-            <span class="config-label" style="min-width:70px">DA Source</span>
-            <label><input type="radio" name="dasource" checked /> Server DA</label>
-            <label><input type="radio" name="dasource" /> Local DA</label>
-          </div>
-        </div>
-        <div class="config-row" style="margin-top:8px">
-          <div class="config-field">
-            <span class="config-label" style="min-width:40px">Auth :</span>
-            <input class="config-input" placeholder="Double click to select file" readonly
-              ondblclick="this.placeholder='auth_bypass.bin ✅'" style="cursor:pointer;" />
-          </div>
-          <div class="config-field">
-            <span class="config-label" style="min-width:40px">Prldr :</span>
-            <input class="config-input" placeholder="Double click to select file" readonly
-              ondblclick="this.placeholder='preloader.bin ✅'" style="cursor:pointer;" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Checkboxes -->
-      <div class="checkbox-row">
-        <label class="checkbox-item"><input type="checkbox" checked /> Auth Bypass [BROM]</label>
-        <label class="checkbox-item"><input type="checkbox" checked /> Force Brom Preloader</label>
-        <label class="checkbox-item"><input type="checkbox" checked /> Send DA Extension</label>
-        <label class="checkbox-item"><input type="checkbox" checked /> Switch High-USB S</label>
-        <label class="checkbox-item"><input type="checkbox" checked /> Read Android Info</label>
-        <label class="checkbox-item"><input type="checkbox" checked /> Auto Reboot</label>
-        <label class="checkbox-item"><input type="checkbox" /> Preloader</label>
-        <div class="config-field">
-          <select class="config-select" style="width:100%">
-            <option>INFINIX</option>
-            <option>TECNO</option>
-            <option>ITEL</option>
-          </select>
-        </div>
-      </div>
+    <div class="feature-card reveal">
+      <span class="feat-icon">🔓</span>
+      <div class="feat-title">FRP & Auth Bypass</div>
+      <div class="feat-desc">Remove Google FRP lock, Huawei ID, Mi Cloud, Oppo ID, and more. One-click bypass with BROM preloader authentication.</div>
+      <span class="feat-tag tag-green">100% SAFE</span>
     </div>
-
-    <!-- Operations Tabs -->
-    <div>
-      <div class="ops-tabs" id="opsTabs">
-        <div class="ops-tab active" onclick="switchOpsTab(this,'operations')">Operations</div>
-        <div class="ops-tab" onclick="switchOpsTab(this,'imei')">IMEI Options</div>
-        <div class="ops-tab" onclick="switchOpsTab(this,'flash')">Flash</div>
-        <div class="ops-tab" onclick="switchOpsTab(this,'partition')">Partition Manager</div>
-      </div>
+    <div class="feature-card reveal">
+      <span class="feat-icon">📱</span>
+      <div class="feat-title">IMEI Repair & Write</div>
+      <div class="feat-desc">Read, write, backup, and restore IMEI numbers. Fix invalid IMEI, repair network issues, and restore original device identity.</div>
+      <span class="feat-tag tag-purple">CERTIFIED</span>
     </div>
-
-    <!-- Buttons Grid -->
-    <div id="opsContent">
-
-      <!-- OPERATIONS TAB -->
-      <div id="tab-operations">
-        <div class="buttons-grid">
-          <button class="tool-btn" onclick="runOp(this,'Reading device info...')">📋 Read Info</button>
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Fixing DL Image Error...')">🔧 Fix DL Image Error</button>
-          <button class="tool-btn" onclick="runOp(this,'Reading RPMB Key...')">🔑 Read RPMB Key</button>
-
-          <button class="tool-btn active-btn" id="formatDataBtn" onclick="runOp(this,'Formatting Data partition...')">🗑️ Format Data</button>
-          <button class="tool-btn" onclick="runOp(this,'Flashing Engineering Preloader...')">⚡ Flash Eng Preloader</button>
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Writing RPMB...')">✍️ Write RPMB</button>
-
-          <button class="tool-btn success-btn" onclick="runOp(this,'Starting Safe Format...')">🛡️ Safe Format</button>
-          <button class="tool-btn" onclick="runOp(this,'Removing Payjoy lock...')">🔓 Remove Payjoy</button>
-          <button class="tool-btn" onclick="runOp(this,'Fixing Red State...')">🔴 Fix Red State</button>
-
-          <button class="tool-btn success-btn" onclick="runOp(this,'Starting Safe Format 1...')">🛡️ Safe Format 1</button>
-          <button class="tool-btn" onclick="runOp(this,'Removing Security Plugin...')">🔐 Remove Security Plugin</button>
-          <button class="tool-btn" onclick="runOp(this,'Fixing DM Verity...')">✅ Fix DM Verity</button>
-
-          <button class="tool-btn success-btn" onclick="runOp(this,'Starting Safe Format 2...')">🛡️ Safe Format 2</button>
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Resetting Oppo ID...')">🔄 Reset Oppo ID</button>
-          <button class="tool-btn" onclick="runOp(this,'Writing IMEI...')">📱 Write IMEI</button>
-
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Resetting FRP lock...')">🔒 Reset FRP</button>
-          <button class="tool-btn" onclick="runOp(this,'Resetting Huawei ID...')">🔄 Reset Huawei ID</button>
-          <button class="tool-btn" onclick="runOp(this,'Backing up EFS...')">💾 Backup EFS</button>
-
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Formatting FRP partition...')">🗑️ Format FRP</button>
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Unlocking Bootloader...')">🔓 Unlock Bootloader</button>
-          <button class="tool-btn" onclick="runOp(this,'Formatting EFS...')">📁 Format EFS</button>
-
-          <button class="tool-btn" onclick="runOp(this,'Resetting Mi Cloud...')">☁️ Reset Micloud</button>
-          <button class="tool-btn" onclick="runOp(this,'Locking Bootloader...')">🔒 Lock Bootloader</button>
-          <button class="tool-btn" onclick="runOp(this,'Replacing EFS...')">🔄 Replace EFS</button>
-
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Disabling Mi Cloud...')">🚫 Disable Micloud</button>
-          <button class="tool-btn" onclick="runOp(this,'Reading RPMB...')">📖 Read RPMB</button>
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Formatting RPMB...')">🗑️ Format RPMB</button>
-
-          <button class="tool-btn" onclick="runOp(this,'Removing Demo mode...')">🎭 Remove Demo</button>
-        </div>
-      </div>
-
-      <!-- IMEI TAB -->
-      <div id="tab-imei" style="display:none">
-        <div class="buttons-grid">
-          <button class="tool-btn" onclick="runOp(this,'Reading IMEI 1...')">📱 Read IMEI 1</button>
-          <button class="tool-btn" onclick="runOp(this,'Reading IMEI 2...')">📱 Read IMEI 2</button>
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Writing IMEI 1...')">✍️ Write IMEI 1</button>
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Writing IMEI 2...')">✍️ Write IMEI 2</button>
-          <button class="tool-btn" onclick="runOp(this,'Generating IMEI...')">🔢 Generate IMEI</button>
-          <button class="tool-btn success-btn" onclick="runOp(this,'Verifying IMEI...')">✅ Verify IMEI</button>
-          <button class="tool-btn" onclick="runOp(this,'Repairing IMEI...')">🔧 Repair IMEI</button>
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Clearing IMEI...')">🗑️ Clear IMEI</button>
-          <button class="tool-btn" onclick="runOp(this,'Backup IMEI...')">💾 Backup IMEI</button>
-        </div>
-      </div>
-
-      <!-- FLASH TAB -->
-      <div id="tab-flash" style="display:none">
-        <div class="buttons-grid">
-          <button class="tool-btn" onclick="runOp(this,'Loading scatter file...')">📂 Load Scatter</button>
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Starting full flash...')">⚡ Full Flash</button>
-          <button class="tool-btn success-btn" onclick="runOp(this,'Flashing firmware...')">💿 Flash Firmware</button>
-          <button class="tool-btn" onclick="runOp(this,'Flashing recovery...')">🔧 Flash Recovery</button>
-          <button class="tool-btn" onclick="runOp(this,'Flashing boot...')">🥾 Flash Boot</button>
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Flashing system...')">🤖 Flash System</button>
-          <button class="tool-btn" onclick="runOp(this,'Flashing userdata...')">👤 Flash Userdata</button>
-          <button class="tool-btn" onclick="runOp(this,'Verifying flash...')">✅ Verify Flash</button>
-        </div>
-      </div>
-
-      <!-- PARTITION TAB -->
-      <div id="tab-partition" style="display:none">
-        <div class="buttons-grid">
-          <button class="tool-btn" onclick="runOp(this,'Reading partition table...')">📋 Read Partition Table</button>
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Writing partition table...')">✍️ Write Partition</button>
-          <button class="tool-btn" onclick="runOp(this,'Backing up partitions...')">💾 Backup Partitions</button>
-          <button class="tool-btn" onclick="runOp(this,'Restoring partitions...')">🔄 Restore Partitions</button>
-          <button class="tool-btn danger-btn" onclick="runOp(this,'Erasing partition...')">🗑️ Erase Partition</button>
-          <button class="tool-btn" onclick="runOp(this,'Reading eMMC info...')">📊 eMMC Info</button>
-        </div>
-      </div>
+    <div class="feature-card reveal">
+      <span class="feat-icon">🛡️</span>
+      <div class="feat-title">Safe Format & Data</div>
+      <div class="feat-desc">Multiple safe format modes to clear device data while keeping system intact. Supports Safe Format 1, 2 and full userdata wipe.</div>
+      <span class="feat-tag tag-green">3 MODES</span>
     </div>
-
-  </div>
-
-  <!-- RIGHT PANEL (LOG) -->
-  <div class="right-panel">
-    <div class="log-header">
-      <div class="log-dot"></div>
-      SYSTEM LOG — LIVE OUTPUT
+    <div class="feature-card reveal">
+      <span class="feat-icon">🔧</span>
+      <div class="feat-title">Bootloader Control</div>
+      <div class="feat-desc">Lock and unlock bootloader on supported devices. Remove DM Verity, fix Red State, and repair engineering preloader issues.</div>
+      <span class="feat-tag tag-orange">ADVANCED</span>
     </div>
-    <div class="log-body" id="logBody">
-      <span class="log-line yellow">EMMC Health Status:</span>
-      <span class="log-line white">• Pre-EOL Status  : <span style="color:#39d353">Normal</span></span>
-      <span class="log-line white">• Life Time [SLC] : <span style="color:#e3b341">[0% ~ 10%] Used</span></span>
-      <span class="log-line white">• Life Time [MLC] : <span style="color:#f85149">[0% ~ 10%] Used</span></span>
-      <span class="log-line green">Switch to High Speed Port...OK</span>
-      <span class="log-line green">Device partition information...[43] OK</span>
-      <span class="log-line green">Getting device info...OK</span>
-      <span class="log-line yellow">─────────────────────────────────────────</span>
-      <span class="log-line yellow">ANDROID SYSTEM INFO</span>
-      <span class="log-line yellow">─────────────────────────────────────────</span>
-      <span class="log-line white">• Brand         : <span style="color:#58a6ff">TECNO</span></span>
-      <span class="log-line white">• Manufacturer  : <span style="color:#58a6ff">TECNO</span></span>
-      <span class="log-line white">• Model Name    : <span style="color:#39d353">TECNO-KE5k</span></span>
-      <span class="log-line white">• Device        : <span style="color:#39d353">TECNO-KE5k</span></span>
-      <span class="log-line white">• Board/Platform: <span style="color:#bc8cff">mt6765</span></span>
-      <span class="log-line white">• Hardware      : <span style="color:#bc8cff">meow</span></span>
-      <span class="log-line white">• Android Ver   : <span style="color:#f78166">10</span></span>
-      <span class="log-line white">• Security Patch : <span style="color:#f85149">2020-12-05</span></span>
-      <span class="log-line white">• SDK/API Level  : <span style="color:#e3b341">29</span></span>
-      <span class="log-line white">• Build ID       : QP1A.190711.020</span>
-      <span class="log-line white">• Display Build  : KE5k-H6122CD-Q-OP-201225V154</span>
-      <span class="log-line white">• Build Incremental: CD-OP-201225V154</span>
-      <span class="log-line white">• Build Date     : Fri Dec 25 16:06:25 CST 2020</span>
-      <span class="log-line white">• Build Type     : <span style="color:#39d353">user</span></span>
-      <span class="log-line white">• TransSSion OS  : <span style="color:#39d353">HiOS</span></span>
-      <span class="log-line white">• CPU ABI        : <span style="color:#bc8cff">arm64-v8a</span></span>
-      <span class="log-line white">• Region/Country : <span style="color:#8b949e">unknown</span></span>
-      <span class="log-line white">• Locale/Language: <span style="color:#58a6ff">en-US</span></span>
-      <span class="log-line yellow">─────────────────────────────────────────</span>
-      <span class="log-line green">Formatting Userdata...OK</span>
-      <span class="log-line green">Formatting FRP...OK</span>
-      <span class="log-line green">Rebooting devices...OK</span>
-      <span class="log-line yellow">─────────────────────────────────────────</span>
-      <span class="log-line" style="color:#39d353; font-weight:bold; font-size:14px;">✅ ALL DONE WITH XTM TOOL BETA V1.0</span>
-      <span class="log-line white">⏱️ Elapsed Time : <span style="color:#e3b341">27 Seconds</span></span>
-      <span class="log-line yellow">─────────────────────────────────────────</span>
+    <div class="feature-card reveal">
+      <span class="feat-icon">💾</span>
+      <div class="feat-title">EFS & RPMB Manager</div>
+      <div class="feat-desc">Full EFS backup, restore, format and replace. RPMB key reading and writing for secure storage partition management.</div>
+      <span class="feat-tag tag-purple">SECURE</span>
     </div>
-
-    <!-- Progress Bar -->
-    <div class="progress-bar-container">
-      <span class="pc-label">PC ●</span>
-      <div class="progress-track">
-        <div class="progress-fill" id="progressFill" style="width:100%"></div>
-        <div class="progress-text" id="progressText">100% OK</div>
-      </div>
-      <div class="ok-badge" id="okBadge">OK ✓</div>
+    <div class="feature-card reveal">
+      <span class="feat-icon">📊</span>
+      <div class="feat-title">Device eMMC Health</div>
+      <div class="feat-desc">Read full device information — eMMC health status, SLC/MLC life time, Android system info, build details and CPU specs.</div>
+      <span class="feat-tag tag-blue">DIAGNOSTICS</span>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feat-icon">🌐</span>
+      <div class="feat-title">Server & Local DA</div>
+      <div class="feat-desc">Connect via Server DA for auto-updates or use Local DA for offline operation. Universal DA support for all MediaTek SoCs.</div>
+      <span class="feat-tag tag-blue">DUAL MODE</span>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feat-icon">🎨</span>
+      <div class="feat-title">Multi-Skin UI</div>
+      <div class="feat-desc">Switch between Glossy, Dark Pro, Neon Blue, and Matrix themes. Fully customizable interface built for long work sessions.</div>
+      <span class="feat-tag tag-purple">4 SKINS</span>
     </div>
   </div>
+</section>
 
-  <!-- STATUS BAR -->
-  <div class="statusbar">
-    <span>XTM TOOL V1.0.0 | <span class="status-green">CONNECTED</span> | Port: COM3</span>
-    <span id="speedDisplay">Speed: 0.00 KB/s</span>
-    <span id="timeDisplay"></span>
+<!-- BRANDS -->
+<div class="brands-section" id="brands">
+  <h2 class="section-title reveal">Supported <span class="accent">Chipsets &amp; Brands</span></h2>
+  <p class="section-sub reveal">XTM MTK supports the widest range of Android chipsets and device manufacturers.</p>
+  <div class="brands-row">
+    <div class="brand-chip active-chip reveal">📱 MediaTek</div>
+    <div class="brand-chip reveal">📱 Samsung</div>
+    <div class="brand-chip reveal">📱 Qualcomm</div>
+    <div class="brand-chip reveal">📱 Unisoc</div>
+    <div class="brand-chip reveal">📱 HiSilicon</div>
+    <div class="brand-chip reveal">📱 Android Universal</div>
+    <div class="brand-chip reveal">📱 TECNO</div>
+    <div class="brand-chip reveal">📱 Infinix</div>
+    <div class="brand-chip reveal">📱 itel</div>
+    <div class="brand-chip reveal">📱 Xiaomi</div>
+    <div class="brand-chip reveal">📱 OPPO</div>
+    <div class="brand-chip reveal">📱 Realme</div>
+    <div class="brand-chip reveal">📱 Vivo</div>
+    <div class="brand-chip reveal">📱 Huawei</div>
   </div>
 </div>
 
-<!-- TOAST NOTIFICATION -->
-<div class="toast" id="toast">✅ Operation Completed!</div>
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div style="max-width:1200px;margin:0 auto">
+    <h2 class="section-title reveal">Simple, Transparent <span class="accent">Pricing</span></h2>
+    <p class="section-sub reveal">Start free and upgrade anytime. No hidden fees. Cancel anytime.</p>
+
+    <div class="pricing-grid">
+      <!-- FREE -->
+      <div class="price-card reveal">
+        <div class="price-plan">🆓 Free</div>
+        <div class="price-amount">₹<span style="font-size:52px">0</span></div>
+        <div class="price-period">Forever Free</div>
+        <ul class="price-features">
+          <li><span class="pf-yes">✓</span> Basic Format &amp; FRP Remove</li>
+          <li><span class="pf-yes">✓</span> Read Device Info</li>
+          <li><span class="pf-yes">✓</span> MediaTek Support</li>
+          <li><span class="pf-yes">✓</span> Community Support</li>
+          <li><span class="pf-no">✗</span> IMEI Write</li>
+          <li><span class="pf-no">✗</span> EFS Backup/Restore</li>
+          <li><span class="pf-no">✗</span> Server DA Access</li>
+          <li><span class="pf-no">✗</span> Priority Support</li>
+        </ul>
+        <button class="btn-price btn-price-outline" onclick="showAlert('Downloading Free version...')">Download Free</button>
+      </div>
+
+      <!-- PRO -->
+      <div class="price-card popular reveal">
+        <div class="popular-badge">⭐ MOST POPULAR</div>
+        <div class="price-plan">🚀 Pro</div>
+        <div class="price-amount">₹<span style="font-size:52px">999</span></div>
+        <div class="price-period">per month</div>
+        <ul class="price-features">
+          <li><span class="pf-yes">✓</span> Everything in Free</li>
+          <li><span class="pf-yes">✓</span> IMEI Read &amp; Write</li>
+          <li><span class="pf-yes">✓</span> EFS Backup &amp; Restore</li>
+          <li><span class="pf-yes">✓</span> All 6 Chipset Brands</li>
+          <li><span class="pf-yes">✓</span> Server DA Access</li>
+          <li><span class="pf-yes">✓</span> Safe Format 1 &amp; 2</li>
+          <li><span class="pf-yes">✓</span> Email Support</li>
+          <li><span class="pf-no">✗</span> White-Label License</li>
+        </ul>
+        <button class="btn-price btn-price-primary" onclick="showAlert('Redirecting to payment...')">🚀 Get Pro — ₹999/mo</button>
+      </div>
+
+      <!-- LIFETIME -->
+      <div class="price-card reveal">
+        <div class="price-plan">👑 Lifetime</div>
+        <div class="price-amount">₹<span style="font-size:52px">4999</span></div>
+        <div class="price-period">one-time payment</div>
+        <ul class="price-features">
+          <li><span class="pf-yes">✓</span> Everything in Pro</li>
+          <li><span class="pf-yes">✓</span> Lifetime Updates</li>
+          <li><span class="pf-yes">✓</span> White-Label License</li>
+          <li><span class="pf-yes">✓</span> 3 PC Activations</li>
+          <li><span class="pf-yes">✓</span> Priority Telegram Support</li>
+          <li><span class="pf-yes">✓</span> Beta Features Early Access</li>
+          <li><span class="pf-yes">✓</span> Custom DA Integration</li>
+          <li><span class="pf-yes">✓</span> Commercial Use</li>
+        </ul>
+        <button class="btn-price btn-price-outline" onclick="showAlert('Redirecting to payment...')">👑 Buy Lifetime</button>
+      </div>
+    </div>
+
+    <p style="text-align:center;color:var(--text2);font-size:13px;margin-top:28px">
+      🔒 Secure Payment via UPI, Paytm, Card &nbsp;|&nbsp; 7-Day Money Back Guarantee &nbsp;|&nbsp; Instant Activation
+    </p>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<div class="download-section" id="download">
+  <h2 class="section-title reveal">⬇ Download <span class="accent">XTM MTK Tool</span></h2>
+  <p class="section-sub reveal">Available for Windows. Fast, free, and no bloatware.</p>
+
+  <div class="download-cards">
+    <div class="dl-card reveal">
+      <span class="dl-icon">🪟</span>
+      <div class="dl-name">Windows x64</div>
+      <div class="dl-ver">Version 1.0.0 BETA</div>
+      <div class="dl-size">📦 Size: 48.2 MB</div>
+      <button class="btn-download" onclick="startDownload('Windows x64')">⬇ Download</button>
+    </div>
+    <div class="dl-card reveal">
+      <span class="dl-icon">🪟</span>
+      <div class="dl-name">Windows x32</div>
+      <div class="dl-ver">Version 1.0.0 BETA</div>
+      <div class="dl-size">📦 Size: 42.7 MB</div>
+      <button class="btn-download" onclick="startDownload('Windows x32')">⬇ Download</button>
+    </div>
+    <div class="dl-card reveal">
+      <span class="dl-icon">📦</span>
+      <div class="dl-name">Setup Installer</div>
+      <div class="dl-ver">Version 1.0.0 BETA</div>
+      <div class="dl-size">📦 Size: 51.8 MB</div>
+      <button class="btn-download" onclick="startDownload('Setup Installer')">⬇ Download</button>
+    </div>
+    <div class="dl-card reveal">
+      <span class="dl-icon">📄</span>
+      <div class="dl-name">Driver Package</div>
+      <div class="dl-ver">MTK USB Drivers</div>
+      <div class="dl-size">📦 Size: 12.4 MB</div>
+      <button class="btn-download" onclick="startDownload('USB Drivers')">⬇ Download</button>
+    </div>
+  </div>
+
+  <div class="dl-requirements reveal">
+    <div class="dl-req-title">💻 System Requirements</div>
+    <ul class="dl-req-list">
+      <li>🪟 Windows 7 / 8 / 10 / 11</li>
+      <li>🧠 RAM: 2 GB minimum</li>
+      <li>💾 Storage: 500 MB free</li>
+      <li>🔌 USB 2.0 / 3.0 Port</li>
+      <li>🌐 Internet (Server DA)</li>
+      <li>⚙️ .NET Framework 4.5+</li>
+    </ul>
+  </div>
+</div>
+
+<!-- CHANGELOG -->
+<section class="changelog-section" id="changelog">
+  <h2 class="section-title reveal">📋 <span class="accent">Changelog</span></h2>
+  <p class="section-sub reveal">What's new in every version.</p>
+
+  <div class="changelog-item reveal">
+    <div class="changelog-ver">v1.0.0 BETA</div>
+    <div class="changelog-date">Released: December 2020</div>
+    <ul class="changelog-list">
+      <li><span class="pf-yes">+</span> Initial public beta release</li>
+      <li><span class="pf-yes">+</span> MediaTek Universal DA V5 support</li>
+      <li><span class="pf-yes">+</span> Format Data, FRP, EFS, RPMB features</li>
+      <li><span class="pf-yes">+</span> IMEI Read/Write support</li>
+      <li><span class="pf-yes">+</span> Auth Bypass BROM mode</li>
+      <li><span class="pf-yes">+</span> eMMC Health reader</li>
+    </ul>
+  </div>
+  <div class="changelog-item reveal">
+    <div class="changelog-ver">v0.9.5 ALPHA</div>
+    <div class="changelog-date">Released: November 2020</div>
+    <ul class="changelog-list">
+      <li><span class="pf-yes">+</span> Private alpha testing</li>
+      <li><span class="pf-yes">+</span> Core engine development</li>
+      <li><span class="pf-yes">+</span> UI/UX design finalized</li>
+    </ul>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">XTM MTK TOOL</div>
+  <div class="footer-sub">Professional Android Flash &amp; Repair Software</div>
+  <div class="footer-links">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#download">Download</a>
+    <a href="#changelog">Changelog</a>
+    <a href="#">Telegram Support</a>
+    <a href="#">Privacy Policy</a>
+  </div>
+  <div class="footer-copy">© 2024 XTM MTK Tool. All rights reserved. Made for mobile technicians worldwide. 🌍</div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast" style="
+  position:fixed;bottom:30px;right:24px;z-index:9999;
+  background:#161b22;border:1px solid #1f6feb;border-radius:10px;
+  padding:14px 22px;font-family:'Share Tech Mono',monospace;font-size:13px;
+  color:#39d353;box-shadow:0 0 25px rgba(31,111,235,0.3);
+  transform:translateX(200%);transition:transform 0.4s;
+"></div>
 
 <script>
-  // === Clock ===
-  function updateTime() {
-    const now = new Date();
-    document.getElementById('timeDisplay').textContent =
-      now.toLocaleTimeString('en-IN', {hour12: false});
-  }
-  setInterval(updateTime, 1000);
-  updateTime();
-
-  // === Brand Switch ===
-  function switchBrand(el, brand) {
-    document.querySelectorAll('.brand-tab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    addLog(`Switching to ${brand} mode...`, 'yellow');
-    setTimeout(() => addLog(`${brand} module loaded. ✓`, 'green'), 500);
-  }
-
-  // === Inner Tab ===
-  function switchInnerTab(el, tab) {
-    document.querySelectorAll('.inner-tab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-  }
-
-  // === Ops Tab ===
-  function switchOpsTab(el, tabId) {
-    document.querySelectorAll('.ops-tab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
-    document.getElementById('tab-' + tabId).style.display = 'block';
-  }
-
-  // === Run Operation ===
-  let isRunning = false;
-  function runOp(btn, msg) {
-    if (isRunning) { showToast('⚠️ Operation already running!'); return; }
-    isRunning = true;
-
-    // Remove previous active-btn
-    document.querySelectorAll('.active-btn:not(#formatDataBtn)').forEach(b => b.classList.remove('active-btn'));
-    btn.classList.add('active-btn');
-
-    // Reset progress
-    const fill = document.getElementById('progressFill');
-    const text = document.getElementById('progressText');
-    const badge = document.getElementById('okBadge');
-    fill.style.width = '0%';
-    text.textContent = '0%';
-    badge.style.background = '#e3b341';
-    badge.textContent = 'WAIT...';
-
-    // Update speed
-    const speedEl = document.getElementById('speedDisplay');
-    let spd = 0;
-    const spdInterval = setInterval(() => {
-      spd = (Math.random() * 2000 + 500).toFixed(2);
-      speedEl.textContent = `Speed: ${spd} KB/s`;
-    }, 300);
-
-    // Log start
-    addLog('─────────────────────────────────────────', 'yellow');
-    addLog(`▶ ${msg}`, 'cyan');
-    addLog('Connecting to device...', 'white');
-
-    // Simulate progress
-    let progress = 0;
-    const pInterval = setInterval(() => {
-      progress += Math.random() * 8 + 3;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(pInterval);
-        clearInterval(spdInterval);
-        speedEl.textContent = 'Speed: 0.00 KB/s';
-        fill.style.background = 'linear-gradient(90deg, #1f6feb, #39d353)';
-        badge.style.background = '#39d353';
-        badge.textContent = 'OK ✓';
-        btn.classList.remove('active-btn');
-        isRunning = false;
-        addLog('✅ ALL DONE! Operation completed successfully.', 'green');
-        addLog(`⏱️ Elapsed Time: ${(Math.random()*20+5).toFixed(0)} Seconds`, 'white');
-        addLog('─────────────────────────────────────────', 'yellow');
-        showToast('✅ Operation Completed!');
-      }
-      fill.style.width = progress + '%';
-      text.textContent = Math.round(progress) + '%';
-    }, 150);
-
-    // Fake log lines
-    const steps = [
-      ['Handshake with device...OK', 'green'],
-      ['Reading BROM preloader...', 'white'],
-      ['Sending DA to device...', 'white'],
-      ['DA sent successfully ✓', 'green'],
-      ['Authenticating...', 'white'],
-      ['Auth bypass OK ✓', 'green'],
-      [msg.replace('...','') + ' in progress...', 'cyan'],
-      ['Verifying operation...', 'white'],
-    ];
-    steps.forEach((s, i) => {
-      setTimeout(() => addLog(s[0], s[1]), i * 350 + 300);
+  // === Scroll Reveal ===
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting) { e.target.classList.add('visible'); }
     });
-  }
-
-  // === Add Log Line ===
-  function addLog(text, cls) {
-    const logBody = document.getElementById('logBody');
-    const span = document.createElement('span');
-    span.className = `log-line ${cls}`;
-    span.textContent = text;
-    logBody.appendChild(span);
-    logBody.scrollTop = logBody.scrollHeight;
-  }
-
-  // === Stop ===
-  function stopOperation() {
-    if (isRunning) {
-      isRunning = false;
-      addLog('⛔ Operation STOPPED by user!', 'red');
-      document.getElementById('progressFill').style.background = '#f85149';
-      document.getElementById('okBadge').style.background = '#f85149';
-      document.getElementById('okBadge').textContent = 'STOP!';
-      showToast('⛔ Operation Stopped!');
-    }
-  }
-
-  // === Max Log ===
-  let maxLog = false;
-  function toggleMaxLog() {
-    maxLog = !maxLog;
-    const logPanel = document.querySelector('.right-panel');
-    logPanel.style.position = maxLog ? 'fixed' : '';
-    logPanel.style.top = maxLog ? '70px' : '';
-    logPanel.style.right = maxLog ? '0' : '';
-    logPanel.style.width = maxLog ? '100vw' : '';
-    logPanel.style.height = maxLog ? 'calc(100vh - 70px)' : '';
-    logPanel.style.zIndex = maxLog ? '500' : '';
-    showToast(maxLog ? '📺 Max Log Mode ON' : '📺 Max Log Mode OFF');
-  }
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
   // === Toast ===
   function showToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.transform = 'translateX(0)';
+    setTimeout(() => t.style.transform = 'translateX(200%)', 3500);
   }
 
-  // === Update Models Based on Brand ===
-  function updateModels() {
-    const brand = document.getElementById('brandSelect').value;
-    const modelSel = document.getElementById('modelSelect');
-    const models = {
-      'MEDIATEK': ['Universal Mediatek V5 - Mediatek','MTK Universal DA V6','Helio G85 - MT6769','Helio G95 - MT6785','Dimensity 700 - MT6833'],
-      'SAMSUNG': ['Samsung Exynos 850','Samsung Exynos 1280','Snapdragon 480 (SM)','Universal Samsung DA'],
-      'QUALCOMM': ['Snapdragon 460','Snapdragon 680','Snapdragon 778G','Universal Qualcomm DA'],
-      'UNISOC': ['UNISOC T606','UNISOC T612','UNISOC T310','Universal UNISOC DA'],
-    };
-    modelSel.innerHTML = (models[brand] || []).map(m => `<option>${m}</option>`).join('');
+  function showAlert(msg) {
+    showToast('⚡ ' + msg);
   }
 
-  // === Skin Change ===
-  function changeSkin(skin) {
-    const root = document.documentElement;
-    const skins = {
-      'Glossy': { '--accent-blue': '#1f6feb', '--bg-dark': '#0d0d0d', '--bg-card': '#161b22' },
-      'Dark Pro': { '--accent-blue': '#58a6ff', '--bg-dark': '#080808', '--bg-card': '#0d1117' },
-      'Neon Blue': { '--accent-blue': '#00f5ff', '--bg-dark': '#020812', '--bg-card': '#050d1a' },
-      'Matrix': { '--accent-blue': '#39d353', '--bg-dark': '#000a00', '--bg-card': '#001200' },
-    };
-    if (skins[skin]) {
-      Object.entries(skins[skin]).forEach(([k, v]) => root.style.setProperty(k, v));
-    }
-    showToast(`🎨 Skin: ${skin}`);
+  // === Download ===
+  function startDownload(name) {
+    showToast('⬇ Preparing ' + name + ' download...');
+    setTimeout(() => showToast('✅ ' + name + ' download started!'), 2000);
   }
 
-  // === Auto log on load ===
-  setTimeout(() => addLog('🟢 XTM Tool ready. Connect your device.', 'green'), 1000);
+  // === Animate stats counter ===
+  function animateCounter(el, target, suffix) {
+    let count = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      count += step;
+      if(count >= target) { count = target; clearInterval(timer); }
+      el.textContent = (Number.isInteger(target) ? Math.round(count) : count.toFixed(1)) + suffix;
+    }, 25);
+  }
+
+  const statObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting && !e.target.dataset.animated) {
+        e.target.dataset.animated = '1';
+        const nums = e.target.querySelectorAll('.stat-num');
+        const data = [['50','+'], ['120','+'], ['6',''], ['99.8','%']];
+        nums.forEach((el, i) => {
+          animateCounter(el, parseFloat(data[i][0]), data[i][1]);
+        });
+      }
+    });
+  }, { threshold:0.5 });
+  const statsSection = document.querySelector('.stats');
+  if(statsSection) statObs.observe(statsSection);
 </script>
 </body>
 </html>
