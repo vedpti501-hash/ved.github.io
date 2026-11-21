@@ -1,40 +1,1105 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meri Pehli Website</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f8ff;
-            padding: 50px;
-        }
-        h1 {
-            color: #2c3e50;
-            font-size: 3em;
-        }
-        p {
-            color: #555;
-            font-size: 1.2em;
-        }
-        .btn {
-            background-color: #3498db;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1em;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>XTM MTK Tool [BETA] V1.0.0</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap');
+
+    :root {
+      --bg-dark: #0d0d0d;
+      --bg-panel: #111418;
+      --bg-card: #161b22;
+      --bg-btn: #1c2128;
+      --bg-btn-hover: #21262d;
+      --accent-blue: #1f6feb;
+      --accent-cyan: #39d353;
+      --accent-orange: #f78166;
+      --accent-yellow: #e3b341;
+      --accent-purple: #bc8cff;
+      --text-primary: #c9d1d9;
+      --text-secondary: #8b949e;
+      --border: #30363d;
+      --btn-active: #1f6feb;
+      --green: #39d353;
+      --red: #f85149;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== TITLEBAR ===== */
+    .titlebar {
+      background: linear-gradient(90deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+      border-bottom: 2px solid var(--accent-blue);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(31,111,235,0.3);
+    }
+
+    .logo-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #f78166, #bc8cff, #1f6feb);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 14px;
+      color: white;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+      animation: logoPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes logoPulse {
+      0%, 100% { box-shadow: 0 0 10px rgba(31,111,235,0.5); }
+      50% { box-shadow: 0 0 25px rgba(188,140,255,0.8), 0 0 50px rgba(31,111,235,0.3); }
+    }
+
+    .title-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent-blue);
+      text-shadow: 0 0 15px rgba(31,111,235,0.6);
+      letter-spacing: 2px;
+    }
+
+    .title-badge {
+      background: var(--accent-orange);
+      color: #000;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+
+    .skin-selector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 10px;
+    }
+
+    .skin-selector label { color: var(--text-secondary); font-size: 13px; }
+    .skin-selector select {
+      background: var(--bg-btn);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-family: 'Rajdhani', sans-serif;
+      cursor: pointer;
+    }
+
+    /* Brand Tabs */
+    .brand-tabs {
+      display: flex;
+      gap: 4px;
+      margin-left: auto;
+      flex-wrap: wrap;
+    }
+
+    .brand-tab {
+      padding: 6px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-btn);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-tab:hover {
+      background: var(--bg-btn-hover);
+      color: var(--text-primary);
+      border-color: var(--accent-blue);
+    }
+
+    .brand-tab.active {
+      background: var(--accent-blue);
+      color: white;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 12px rgba(31,111,235,0.5);
+    }
+
+    .title-actions {
+      display: flex;
+      gap: 8px;
+      margin-left: 10px;
+    }
+
+    .btn-stop {
+      padding: 6px 18px;
+      background: var(--red);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      transition: all 0.2s;
+      letter-spacing: 1px;
+    }
+
+    .btn-stop:hover { background: #ff6b6b; box-shadow: 0 0 12px rgba(248,81,73,0.5); }
+
+    .btn-maxlog {
+      padding: 6px 18px;
+      background: var(--bg-btn);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-primary);
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      transition: all 0.2s;
+      letter-spacing: 1px;
+    }
+
+    .btn-maxlog:hover { background: var(--bg-btn-hover); border-color: var(--accent-blue); }
+
+    /* ===== MAIN LAYOUT ===== */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 0;
+      height: calc(100vh - 70px);
+    }
+
+    /* ===== LEFT PANEL ===== */
+    .left-panel {
+      border-right: 2px solid var(--border);
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Inner Tabs */
+    .inner-tabs {
+      display: flex;
+      border-bottom: 2px solid var(--border);
+      gap: 0;
+    }
+
+    .inner-tab {
+      padding: 8px 24px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+
+    .inner-tab.active {
+      color: var(--accent-blue);
+      border-bottom-color: var(--accent-blue);
+      text-shadow: 0 0 10px rgba(31,111,235,0.5);
+    }
+
+    .inner-tab:hover { color: var(--text-primary); }
+
+    /* Config Section */
+    .config-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .config-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .config-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .config-label {
+      color: var(--text-secondary);
+      font-size: 12px;
+      white-space: nowrap;
+      min-width: 55px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .config-select, .config-input {
+      flex: 1;
+      background: var(--bg-btn);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      transition: border-color 0.2s;
+    }
+
+    .config-select:focus, .config-input:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+    }
+
+    /* DA Source */
+    .da-source {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .da-source label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .da-source input[type="radio"] { accent-color: var(--accent-blue); }
+
+    /* Checkboxes */
+    .checkbox-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .checkbox-item input[type="checkbox"] { accent-color: var(--accent-blue); }
+
+    /* ===== OPERATIONS TABS ===== */
+    .ops-tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .ops-tab {
+      padding: 5px 18px;
+      border-radius: 6px 6px 0 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      background: var(--bg-btn);
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .ops-tab.active {
+      background: var(--accent-blue);
+      color: white;
+      border-color: var(--accent-blue);
+    }
+
+    .ops-tab:hover:not(.active) { background: var(--bg-btn-hover); color: var(--text-primary); }
+
+    /* ===== BUTTONS GRID ===== */
+    .buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .tool-btn {
+      padding: 9px 8px;
+      background: var(--bg-btn);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-primary);
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      text-align: center;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      transition: left 0.4s;
+    }
+
+    .tool-btn:hover::before { left: 100%; }
+
+    .tool-btn:hover {
+      background: var(--bg-btn-hover);
+      border-color: var(--accent-blue);
+      color: white;
+      box-shadow: 0 0 10px rgba(31,111,235,0.2);
+      transform: translateY(-1px);
+    }
+
+    .tool-btn.active-btn {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: white;
+      box-shadow: 0 0 15px rgba(31,111,235,0.5);
+      animation: btnPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes btnPulse {
+      0%, 100% { box-shadow: 0 0 10px rgba(31,111,235,0.4); }
+      50% { box-shadow: 0 0 20px rgba(31,111,235,0.8); }
+    }
+
+    .tool-btn.danger-btn:hover {
+      border-color: var(--red);
+      box-shadow: 0 0 10px rgba(248,81,73,0.3);
+    }
+
+    .tool-btn.success-btn:hover {
+      border-color: var(--green);
+      box-shadow: 0 0 10px rgba(57,211,83,0.3);
+    }
+
+    /* ===== RIGHT PANEL (LOG) ===== */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      background: #0a0e14;
+      border-left: 2px solid var(--border);
+    }
+
+    .log-header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      color: var(--accent-blue);
+      letter-spacing: 2px;
+    }
+
+    .log-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 1s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .log-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .log-body::-webkit-scrollbar { width: 6px; }
+    .log-body::-webkit-scrollbar-track { background: #0a0e14; }
+    .log-body::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+
+    .log-line { display: block; }
+    .log-line.green { color: #39d353; }
+    .log-line.yellow { color: #e3b341; }
+    .log-line.red { color: #f85149; }
+    .log-line.cyan { color: #58a6ff; }
+    .log-line.white { color: #c9d1d9; }
+    .log-line.purple { color: #bc8cff; }
+    .log-line.orange { color: #f78166; }
+    .log-line.dimmed { color: #6e7681; }
+
+    .log-section-title {
+      color: #e3b341;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+
+    /* Progress Bar */
+    .progress-bar-container {
+      border-top: 2px solid var(--border);
+      padding: 10px 14px;
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pc-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 20px;
+      background: #0d1117;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #1f6feb, #39d353);
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.3s;
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 20px; height: 100%;
+      background: rgba(255,255,255,0.3);
+      border-radius: 0 10px 10px 0;
+    }
+
+    .progress-text {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: white;
+      white-space: nowrap;
+      text-shadow: 0 0 5px rgba(0,0,0,0.8);
+    }
+
+    .ok-badge {
+      background: var(--green);
+      color: #000;
+      font-weight: 700;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    /* Status Bar */
+    .statusbar {
+      background: #0a0e14;
+      border-top: 1px solid var(--border);
+      padding: 5px 14px;
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--text-secondary);
+      grid-column: 1 / -1;
+    }
+
+    .status-green { color: var(--green); }
+
+    /* Scrollbar */
+    .left-panel::-webkit-scrollbar { width: 6px; }
+    .left-panel::-webkit-scrollbar-track { background: var(--bg-dark); }
+    .left-panel::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+
+    /* Section Divider */
+    .section-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      color: var(--accent-blue);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+    }
+
+    /* Tooltip */
+    .tool-btn[title]:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: calc(100% + 5px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #000;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      white-space: nowrap;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .right-panel { display: none; }
+      .brand-tabs { display: none; }
+      .checkbox-row { grid-template-columns: repeat(2, 1fr); }
+      .buttons-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Notification Toast */
+    .toast {
+      position: fixed;
+      bottom: 40px;
+      right: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--accent-blue);
+      color: var(--green);
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      box-shadow: 0 0 20px rgba(31,111,235,0.3);
+      transform: translateX(200%);
+      transition: transform 0.4s;
+      z-index: 999;
+    }
+
+    .toast.show { transform: translateX(0); }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .config-section, .buttons-grid, .ops-tabs {
+      animation: fadeIn 0.3s ease-out;
+    }
+  </style>
 </head>
 <body>
-    <h1>🙏 Namaste Duniya!</h1>
-    <p>Yeh meri pehli GitHub website hai!</p>
-    <p>Mera naam: <strong>Aapka Naam</strong></p>
-    <button class="btn" onclick="alert('Shukriya!')">Click Karein!</button>
+
+<!-- TITLEBAR -->
+<div class="titlebar">
+  <div class="logo-box">
+    <div class="logo-icon">XTM</div>
+    <div>
+      <div class="title-text">XTM MTK <span class="title-badge">BETA</span> V1.0.0</div>
+    </div>
+  </div>
+
+  <div class="skin-selector">
+    <label>Skin:</label>
+    <select onchange="changeSkin(this.value)">
+      <option>Glossy</option>
+      <option>Dark Pro</option>
+      <option>Neon Blue</option>
+      <option>Matrix</option>
+    </select>
+  </div>
+
+  <div class="brand-tabs">
+    <div class="brand-tab" onclick="switchBrand(this,'Samsung')">Samsung</div>
+    <div class="brand-tab active" onclick="switchBrand(this,'Mediatek')">Mediatek</div>
+    <div class="brand-tab" onclick="switchBrand(this,'Qualcomm')">Qualcomm</div>
+    <div class="brand-tab" onclick="switchBrand(this,'Unisoc')">Unisoc</div>
+    <div class="brand-tab" onclick="switchBrand(this,'HiSilicon')">HiSilicon</div>
+    <div class="brand-tab" onclick="switchBrand(this,'Android')">Android</div>
+  </div>
+
+  <div class="title-actions">
+    <button class="btn-stop" onclick="stopOperation()">■ Stop</button>
+    <button class="btn-maxlog" onclick="toggleMaxLog()">Max Log</button>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div style="display:grid; grid-template-columns:1fr 420px; grid-template-rows:1fr auto; height:calc(100vh - 70px);">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+
+    <!-- Inner Tabs -->
+    <div class="inner-tabs">
+      <div class="inner-tab active" onclick="switchInnerTab(this,'preloader')">PRELOADER / BROM</div>
+      <div class="inner-tab" onclick="switchInnerTab(this,'meta')">META</div>
+    </div>
+
+    <!-- Config Section -->
+    <div class="config-section">
+      <div class="config-row">
+        <div class="config-field">
+          <span class="config-label">Brand :</span>
+          <select class="config-select" id="brandSelect" onchange="updateModels()">
+            <option>MEDIATEK</option>
+            <option>SAMSUNG</option>
+            <option>QUALCOMM</option>
+            <option>UNISOC</option>
+          </select>
+        </div>
+        <div class="config-field">
+          <span class="config-label">Model :</span>
+          <select class="config-select" id="modelSelect">
+            <option>Universal Mediatek V5 - Mediatek</option>
+            <option>MTK Universal DA V6</option>
+            <option>Helio G85 - MT6769</option>
+            <option>Helio G95 - MT6785</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- DA Connections -->
+      <div>
+        <div class="section-label">DA Connections</div>
+        <div class="config-row">
+          <div class="config-field">
+            <span class="config-label" style="min-width:30px">DA :</span>
+            <select class="config-select">
+              <option>MTK_AllInOne_DA</option>
+              <option>MTK_DA_v5.2</option>
+              <option>MTK_DA_v6</option>
+            </select>
+          </div>
+          <div class="da-source">
+            <span class="config-label" style="min-width:70px">DA Source</span>
+            <label><input type="radio" name="dasource" checked /> Server DA</label>
+            <label><input type="radio" name="dasource" /> Local DA</label>
+          </div>
+        </div>
+        <div class="config-row" style="margin-top:8px">
+          <div class="config-field">
+            <span class="config-label" style="min-width:40px">Auth :</span>
+            <input class="config-input" placeholder="Double click to select file" readonly
+              ondblclick="this.placeholder='auth_bypass.bin ✅'" style="cursor:pointer;" />
+          </div>
+          <div class="config-field">
+            <span class="config-label" style="min-width:40px">Prldr :</span>
+            <input class="config-input" placeholder="Double click to select file" readonly
+              ondblclick="this.placeholder='preloader.bin ✅'" style="cursor:pointer;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkboxes -->
+      <div class="checkbox-row">
+        <label class="checkbox-item"><input type="checkbox" checked /> Auth Bypass [BROM]</label>
+        <label class="checkbox-item"><input type="checkbox" checked /> Force Brom Preloader</label>
+        <label class="checkbox-item"><input type="checkbox" checked /> Send DA Extension</label>
+        <label class="checkbox-item"><input type="checkbox" checked /> Switch High-USB S</label>
+        <label class="checkbox-item"><input type="checkbox" checked /> Read Android Info</label>
+        <label class="checkbox-item"><input type="checkbox" checked /> Auto Reboot</label>
+        <label class="checkbox-item"><input type="checkbox" /> Preloader</label>
+        <div class="config-field">
+          <select class="config-select" style="width:100%">
+            <option>INFINIX</option>
+            <option>TECNO</option>
+            <option>ITEL</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Operations Tabs -->
+    <div>
+      <div class="ops-tabs" id="opsTabs">
+        <div class="ops-tab active" onclick="switchOpsTab(this,'operations')">Operations</div>
+        <div class="ops-tab" onclick="switchOpsTab(this,'imei')">IMEI Options</div>
+        <div class="ops-tab" onclick="switchOpsTab(this,'flash')">Flash</div>
+        <div class="ops-tab" onclick="switchOpsTab(this,'partition')">Partition Manager</div>
+      </div>
+    </div>
+
+    <!-- Buttons Grid -->
+    <div id="opsContent">
+
+      <!-- OPERATIONS TAB -->
+      <div id="tab-operations">
+        <div class="buttons-grid">
+          <button class="tool-btn" onclick="runOp(this,'Reading device info...')">📋 Read Info</button>
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Fixing DL Image Error...')">🔧 Fix DL Image Error</button>
+          <button class="tool-btn" onclick="runOp(this,'Reading RPMB Key...')">🔑 Read RPMB Key</button>
+
+          <button class="tool-btn active-btn" id="formatDataBtn" onclick="runOp(this,'Formatting Data partition...')">🗑️ Format Data</button>
+          <button class="tool-btn" onclick="runOp(this,'Flashing Engineering Preloader...')">⚡ Flash Eng Preloader</button>
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Writing RPMB...')">✍️ Write RPMB</button>
+
+          <button class="tool-btn success-btn" onclick="runOp(this,'Starting Safe Format...')">🛡️ Safe Format</button>
+          <button class="tool-btn" onclick="runOp(this,'Removing Payjoy lock...')">🔓 Remove Payjoy</button>
+          <button class="tool-btn" onclick="runOp(this,'Fixing Red State...')">🔴 Fix Red State</button>
+
+          <button class="tool-btn success-btn" onclick="runOp(this,'Starting Safe Format 1...')">🛡️ Safe Format 1</button>
+          <button class="tool-btn" onclick="runOp(this,'Removing Security Plugin...')">🔐 Remove Security Plugin</button>
+          <button class="tool-btn" onclick="runOp(this,'Fixing DM Verity...')">✅ Fix DM Verity</button>
+
+          <button class="tool-btn success-btn" onclick="runOp(this,'Starting Safe Format 2...')">🛡️ Safe Format 2</button>
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Resetting Oppo ID...')">🔄 Reset Oppo ID</button>
+          <button class="tool-btn" onclick="runOp(this,'Writing IMEI...')">📱 Write IMEI</button>
+
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Resetting FRP lock...')">🔒 Reset FRP</button>
+          <button class="tool-btn" onclick="runOp(this,'Resetting Huawei ID...')">🔄 Reset Huawei ID</button>
+          <button class="tool-btn" onclick="runOp(this,'Backing up EFS...')">💾 Backup EFS</button>
+
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Formatting FRP partition...')">🗑️ Format FRP</button>
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Unlocking Bootloader...')">🔓 Unlock Bootloader</button>
+          <button class="tool-btn" onclick="runOp(this,'Formatting EFS...')">📁 Format EFS</button>
+
+          <button class="tool-btn" onclick="runOp(this,'Resetting Mi Cloud...')">☁️ Reset Micloud</button>
+          <button class="tool-btn" onclick="runOp(this,'Locking Bootloader...')">🔒 Lock Bootloader</button>
+          <button class="tool-btn" onclick="runOp(this,'Replacing EFS...')">🔄 Replace EFS</button>
+
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Disabling Mi Cloud...')">🚫 Disable Micloud</button>
+          <button class="tool-btn" onclick="runOp(this,'Reading RPMB...')">📖 Read RPMB</button>
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Formatting RPMB...')">🗑️ Format RPMB</button>
+
+          <button class="tool-btn" onclick="runOp(this,'Removing Demo mode...')">🎭 Remove Demo</button>
+        </div>
+      </div>
+
+      <!-- IMEI TAB -->
+      <div id="tab-imei" style="display:none">
+        <div class="buttons-grid">
+          <button class="tool-btn" onclick="runOp(this,'Reading IMEI 1...')">📱 Read IMEI 1</button>
+          <button class="tool-btn" onclick="runOp(this,'Reading IMEI 2...')">📱 Read IMEI 2</button>
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Writing IMEI 1...')">✍️ Write IMEI 1</button>
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Writing IMEI 2...')">✍️ Write IMEI 2</button>
+          <button class="tool-btn" onclick="runOp(this,'Generating IMEI...')">🔢 Generate IMEI</button>
+          <button class="tool-btn success-btn" onclick="runOp(this,'Verifying IMEI...')">✅ Verify IMEI</button>
+          <button class="tool-btn" onclick="runOp(this,'Repairing IMEI...')">🔧 Repair IMEI</button>
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Clearing IMEI...')">🗑️ Clear IMEI</button>
+          <button class="tool-btn" onclick="runOp(this,'Backup IMEI...')">💾 Backup IMEI</button>
+        </div>
+      </div>
+
+      <!-- FLASH TAB -->
+      <div id="tab-flash" style="display:none">
+        <div class="buttons-grid">
+          <button class="tool-btn" onclick="runOp(this,'Loading scatter file...')">📂 Load Scatter</button>
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Starting full flash...')">⚡ Full Flash</button>
+          <button class="tool-btn success-btn" onclick="runOp(this,'Flashing firmware...')">💿 Flash Firmware</button>
+          <button class="tool-btn" onclick="runOp(this,'Flashing recovery...')">🔧 Flash Recovery</button>
+          <button class="tool-btn" onclick="runOp(this,'Flashing boot...')">🥾 Flash Boot</button>
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Flashing system...')">🤖 Flash System</button>
+          <button class="tool-btn" onclick="runOp(this,'Flashing userdata...')">👤 Flash Userdata</button>
+          <button class="tool-btn" onclick="runOp(this,'Verifying flash...')">✅ Verify Flash</button>
+        </div>
+      </div>
+
+      <!-- PARTITION TAB -->
+      <div id="tab-partition" style="display:none">
+        <div class="buttons-grid">
+          <button class="tool-btn" onclick="runOp(this,'Reading partition table...')">📋 Read Partition Table</button>
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Writing partition table...')">✍️ Write Partition</button>
+          <button class="tool-btn" onclick="runOp(this,'Backing up partitions...')">💾 Backup Partitions</button>
+          <button class="tool-btn" onclick="runOp(this,'Restoring partitions...')">🔄 Restore Partitions</button>
+          <button class="tool-btn danger-btn" onclick="runOp(this,'Erasing partition...')">🗑️ Erase Partition</button>
+          <button class="tool-btn" onclick="runOp(this,'Reading eMMC info...')">📊 eMMC Info</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT PANEL (LOG) -->
+  <div class="right-panel">
+    <div class="log-header">
+      <div class="log-dot"></div>
+      SYSTEM LOG — LIVE OUTPUT
+    </div>
+    <div class="log-body" id="logBody">
+      <span class="log-line yellow">EMMC Health Status:</span>
+      <span class="log-line white">• Pre-EOL Status  : <span style="color:#39d353">Normal</span></span>
+      <span class="log-line white">• Life Time [SLC] : <span style="color:#e3b341">[0% ~ 10%] Used</span></span>
+      <span class="log-line white">• Life Time [MLC] : <span style="color:#f85149">[0% ~ 10%] Used</span></span>
+      <span class="log-line green">Switch to High Speed Port...OK</span>
+      <span class="log-line green">Device partition information...[43] OK</span>
+      <span class="log-line green">Getting device info...OK</span>
+      <span class="log-line yellow">─────────────────────────────────────────</span>
+      <span class="log-line yellow">ANDROID SYSTEM INFO</span>
+      <span class="log-line yellow">─────────────────────────────────────────</span>
+      <span class="log-line white">• Brand         : <span style="color:#58a6ff">TECNO</span></span>
+      <span class="log-line white">• Manufacturer  : <span style="color:#58a6ff">TECNO</span></span>
+      <span class="log-line white">• Model Name    : <span style="color:#39d353">TECNO-KE5k</span></span>
+      <span class="log-line white">• Device        : <span style="color:#39d353">TECNO-KE5k</span></span>
+      <span class="log-line white">• Board/Platform: <span style="color:#bc8cff">mt6765</span></span>
+      <span class="log-line white">• Hardware      : <span style="color:#bc8cff">meow</span></span>
+      <span class="log-line white">• Android Ver   : <span style="color:#f78166">10</span></span>
+      <span class="log-line white">• Security Patch : <span style="color:#f85149">2020-12-05</span></span>
+      <span class="log-line white">• SDK/API Level  : <span style="color:#e3b341">29</span></span>
+      <span class="log-line white">• Build ID       : QP1A.190711.020</span>
+      <span class="log-line white">• Display Build  : KE5k-H6122CD-Q-OP-201225V154</span>
+      <span class="log-line white">• Build Incremental: CD-OP-201225V154</span>
+      <span class="log-line white">• Build Date     : Fri Dec 25 16:06:25 CST 2020</span>
+      <span class="log-line white">• Build Type     : <span style="color:#39d353">user</span></span>
+      <span class="log-line white">• TransSSion OS  : <span style="color:#39d353">HiOS</span></span>
+      <span class="log-line white">• CPU ABI        : <span style="color:#bc8cff">arm64-v8a</span></span>
+      <span class="log-line white">• Region/Country : <span style="color:#8b949e">unknown</span></span>
+      <span class="log-line white">• Locale/Language: <span style="color:#58a6ff">en-US</span></span>
+      <span class="log-line yellow">─────────────────────────────────────────</span>
+      <span class="log-line green">Formatting Userdata...OK</span>
+      <span class="log-line green">Formatting FRP...OK</span>
+      <span class="log-line green">Rebooting devices...OK</span>
+      <span class="log-line yellow">─────────────────────────────────────────</span>
+      <span class="log-line" style="color:#39d353; font-weight:bold; font-size:14px;">✅ ALL DONE WITH XTM TOOL BETA V1.0</span>
+      <span class="log-line white">⏱️ Elapsed Time : <span style="color:#e3b341">27 Seconds</span></span>
+      <span class="log-line yellow">─────────────────────────────────────────</span>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar-container">
+      <span class="pc-label">PC ●</span>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:100%"></div>
+        <div class="progress-text" id="progressText">100% OK</div>
+      </div>
+      <div class="ok-badge" id="okBadge">OK ✓</div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="statusbar">
+    <span>XTM TOOL V1.0.0 | <span class="status-green">CONNECTED</span> | Port: COM3</span>
+    <span id="speedDisplay">Speed: 0.00 KB/s</span>
+    <span id="timeDisplay"></span>
+  </div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toast">✅ Operation Completed!</div>
+
+<script>
+  // === Clock ===
+  function updateTime() {
+    const now = new Date();
+    document.getElementById('timeDisplay').textContent =
+      now.toLocaleTimeString('en-IN', {hour12: false});
+  }
+  setInterval(updateTime, 1000);
+  updateTime();
+
+  // === Brand Switch ===
+  function switchBrand(el, brand) {
+    document.querySelectorAll('.brand-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    addLog(`Switching to ${brand} mode...`, 'yellow');
+    setTimeout(() => addLog(`${brand} module loaded. ✓`, 'green'), 500);
+  }
+
+  // === Inner Tab ===
+  function switchInnerTab(el, tab) {
+    document.querySelectorAll('.inner-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // === Ops Tab ===
+  function switchOpsTab(el, tabId) {
+    document.querySelectorAll('.ops-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
+    document.getElementById('tab-' + tabId).style.display = 'block';
+  }
+
+  // === Run Operation ===
+  let isRunning = false;
+  function runOp(btn, msg) {
+    if (isRunning) { showToast('⚠️ Operation already running!'); return; }
+    isRunning = true;
+
+    // Remove previous active-btn
+    document.querySelectorAll('.active-btn:not(#formatDataBtn)').forEach(b => b.classList.remove('active-btn'));
+    btn.classList.add('active-btn');
+
+    // Reset progress
+    const fill = document.getElementById('progressFill');
+    const text = document.getElementById('progressText');
+    const badge = document.getElementById('okBadge');
+    fill.style.width = '0%';
+    text.textContent = '0%';
+    badge.style.background = '#e3b341';
+    badge.textContent = 'WAIT...';
+
+    // Update speed
+    const speedEl = document.getElementById('speedDisplay');
+    let spd = 0;
+    const spdInterval = setInterval(() => {
+      spd = (Math.random() * 2000 + 500).toFixed(2);
+      speedEl.textContent = `Speed: ${spd} KB/s`;
+    }, 300);
+
+    // Log start
+    addLog('─────────────────────────────────────────', 'yellow');
+    addLog(`▶ ${msg}`, 'cyan');
+    addLog('Connecting to device...', 'white');
+
+    // Simulate progress
+    let progress = 0;
+    const pInterval = setInterval(() => {
+      progress += Math.random() * 8 + 3;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(pInterval);
+        clearInterval(spdInterval);
+        speedEl.textContent = 'Speed: 0.00 KB/s';
+        fill.style.background = 'linear-gradient(90deg, #1f6feb, #39d353)';
+        badge.style.background = '#39d353';
+        badge.textContent = 'OK ✓';
+        btn.classList.remove('active-btn');
+        isRunning = false;
+        addLog('✅ ALL DONE! Operation completed successfully.', 'green');
+        addLog(`⏱️ Elapsed Time: ${(Math.random()*20+5).toFixed(0)} Seconds`, 'white');
+        addLog('─────────────────────────────────────────', 'yellow');
+        showToast('✅ Operation Completed!');
+      }
+      fill.style.width = progress + '%';
+      text.textContent = Math.round(progress) + '%';
+    }, 150);
+
+    // Fake log lines
+    const steps = [
+      ['Handshake with device...OK', 'green'],
+      ['Reading BROM preloader...', 'white'],
+      ['Sending DA to device...', 'white'],
+      ['DA sent successfully ✓', 'green'],
+      ['Authenticating...', 'white'],
+      ['Auth bypass OK ✓', 'green'],
+      [msg.replace('...','') + ' in progress...', 'cyan'],
+      ['Verifying operation...', 'white'],
+    ];
+    steps.forEach((s, i) => {
+      setTimeout(() => addLog(s[0], s[1]), i * 350 + 300);
+    });
+  }
+
+  // === Add Log Line ===
+  function addLog(text, cls) {
+    const logBody = document.getElementById('logBody');
+    const span = document.createElement('span');
+    span.className = `log-line ${cls}`;
+    span.textContent = text;
+    logBody.appendChild(span);
+    logBody.scrollTop = logBody.scrollHeight;
+  }
+
+  // === Stop ===
+  function stopOperation() {
+    if (isRunning) {
+      isRunning = false;
+      addLog('⛔ Operation STOPPED by user!', 'red');
+      document.getElementById('progressFill').style.background = '#f85149';
+      document.getElementById('okBadge').style.background = '#f85149';
+      document.getElementById('okBadge').textContent = 'STOP!';
+      showToast('⛔ Operation Stopped!');
+    }
+  }
+
+  // === Max Log ===
+  let maxLog = false;
+  function toggleMaxLog() {
+    maxLog = !maxLog;
+    const logPanel = document.querySelector('.right-panel');
+    logPanel.style.position = maxLog ? 'fixed' : '';
+    logPanel.style.top = maxLog ? '70px' : '';
+    logPanel.style.right = maxLog ? '0' : '';
+    logPanel.style.width = maxLog ? '100vw' : '';
+    logPanel.style.height = maxLog ? 'calc(100vh - 70px)' : '';
+    logPanel.style.zIndex = maxLog ? '500' : '';
+    showToast(maxLog ? '📺 Max Log Mode ON' : '📺 Max Log Mode OFF');
+  }
+
+  // === Toast ===
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  // === Update Models Based on Brand ===
+  function updateModels() {
+    const brand = document.getElementById('brandSelect').value;
+    const modelSel = document.getElementById('modelSelect');
+    const models = {
+      'MEDIATEK': ['Universal Mediatek V5 - Mediatek','MTK Universal DA V6','Helio G85 - MT6769','Helio G95 - MT6785','Dimensity 700 - MT6833'],
+      'SAMSUNG': ['Samsung Exynos 850','Samsung Exynos 1280','Snapdragon 480 (SM)','Universal Samsung DA'],
+      'QUALCOMM': ['Snapdragon 460','Snapdragon 680','Snapdragon 778G','Universal Qualcomm DA'],
+      'UNISOC': ['UNISOC T606','UNISOC T612','UNISOC T310','Universal UNISOC DA'],
+    };
+    modelSel.innerHTML = (models[brand] || []).map(m => `<option>${m}</option>`).join('');
+  }
+
+  // === Skin Change ===
+  function changeSkin(skin) {
+    const root = document.documentElement;
+    const skins = {
+      'Glossy': { '--accent-blue': '#1f6feb', '--bg-dark': '#0d0d0d', '--bg-card': '#161b22' },
+      'Dark Pro': { '--accent-blue': '#58a6ff', '--bg-dark': '#080808', '--bg-card': '#0d1117' },
+      'Neon Blue': { '--accent-blue': '#00f5ff', '--bg-dark': '#020812', '--bg-card': '#050d1a' },
+      'Matrix': { '--accent-blue': '#39d353', '--bg-dark': '#000a00', '--bg-card': '#001200' },
+    };
+    if (skins[skin]) {
+      Object.entries(skins[skin]).forEach(([k, v]) => root.style.setProperty(k, v));
+    }
+    showToast(`🎨 Skin: ${skin}`);
+  }
+
+  // === Auto log on load ===
+  setTimeout(() => addLog('🟢 XTM Tool ready. Connect your device.', 'green'), 1000);
+</script>
 </body>
 </html>
